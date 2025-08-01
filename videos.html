@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GS GAKORO - Live or Latest Video</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #00ADEF; /* Rwanda sky blue */
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #FF7F00; /* orange */
+      font-size: 2em;
+    }
+
+    .banner {
+      background-color: #FCD116; /* yellow */
+      padding: 10px;
+      color: #007A5E; /* green */
+      font-weight: bold;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    iframe {
+      width: 90%;
+      max-width: 560px;
+      height: 315px;
+      border: 5px solid #FCD116; /* yellow border */
+      border-radius: 10px;
+    }
+
+    p {
+      color: #fff;
+      margin-top: 10px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">🎥 Welcome to Gakoro Media tv</div>
+  <h1>Live or Latest Video</h1>
+  <div id="video-player">Loading...</div>
+
+  <script>
+    const apiKey = 'AIzaSyBrIEq8jP5nhGZHSmkAoQbb0VZxzIsGwPs';
+    const channelId = 'UCuQCsYE_gp4h-8GtECfcdbw';
+
+    async function loadVideo() {
+      const container = document.getElementById('video-player');
+
+      try {
+        const liveRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`);
+        const liveData = await liveRes.json();
+
+        if (liveData.items && liveData.items.length > 0) {
+          const liveVideoId = liveData.items[0].id.videoId;
+          container.innerHTML = `<iframe src="https://www.youtube.com/embed/${liveVideoId}?autoplay=1" allowfullscreen></iframe><p>🔴 We are live now!</p>`;
+        } else {
+          const latestRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&maxResults=1&type=video&key=${apiKey}`);
+          const latestData = await latestRes.json();
+
+          if (latestData.items && latestData.items.length > 0) {
+            const videoId = latestData.items[0].id.videoId;
+            container.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe><p>Latest uploaded video</p>`;
+          } else {
+            container.innerText = "No recent videos found.";
+          }
+        }
+      } catch (error) {
+        console.error('Error loading video:', error);
+        container.innerText = "Failed to load videos.";
+      }
+    }
+
+    loadVideo();
+  </script>
+</body>
+</html>
