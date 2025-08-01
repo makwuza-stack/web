@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GS GAKORO RIASEC TEST</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0; padding: 0;
+      background: #fff8f0;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(to right, #3498db, #f1c40f, #27ae60);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    footer {
+      background: #f1c40f;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      border-top: 3px solid orange;
+    }
+    form {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      min-height: 400px;
+      position: relative;
+    }
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 2px solid orange;
+      border-radius: 5px;
+    }
+    .question p {
+      margin-bottom: 5px;
+    }
+    button {
+      background-color: orange;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px 5px 0 0;
+    }
+    button:hover {
+      background-color: #d35400;
+    }
+    #summary {
+      margin-top: 20px;
+      background: #ffe5cc;
+      border-left: 5px solid orange;
+      padding: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GS GAKORO RIASEC TEST</h1>
+  </header>
+
+  <form id="riaform">
+    <div class="page active" id="page-1">
+      <label for="name">Name (Izina):</label>
+      <input type="text" name="name" required>
+
+      <label for="student_number">Student Number (Nomero y'umunyeshuri):</label>
+      <input type="text" name="student_number" required>
+
+      <label for="class">Class (Icyiciro cy'amashuri):</label>
+      <input type="text" name="class" required>
+
+      <div class="question">
+        <p>1. I like to work on cars<br><i>(Nkundira gukora ku mamodoka)</i></p>
+        <select name="q1" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>2. I like to do puzzles<br><i>(Nkundira gukemura udushushanyo duhuje)</i></p>
+        <select name="q2" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>3. I am good at working independently<br><i>(Mbasha gukora ntari kumwe n’abandi)</i></p>
+        <select name="q3" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>4. I like to work in teams<br><i>(Nkundira gukorera mu itsinda)</i></p>
+        <select name="q4" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>5. I am an ambitious person, I set goals for myself<br><i>(Ndi umuntu wifuza kugera kure, nshyiraho intego)</i></p>
+        <select name="q5" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>6. I like to organize things (files, desks/offices)<br><i>(Nkundira gutunganya ibintu (amadosiye, ibiro))</i></p>
+        <select name="q6" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>7. I like to build things<br><i>(Nkundira kubaka ibintu)</i></p>
+        <select name="q7" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>8. I like to read about art and music<br><i>(Nkundira gusoma ibijyanye n’ubugeni n’umuziki)</i></p>
+        <select name="q8" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>9. I like to have clear instructions to follow<br><i>(Nkundira kubona amabwiriza asobanutse yo gukurikiza)</i></p>
+        <select name="q9" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>10. I like to try to influence or persuade people<br><i>(Nkundira kugerageza kugiraho abandi ingaruka)</i></p>
+        <select name="q10" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+
+      <button type="button" id="next1">Next &raquo;</button>
+    </div>
+
+    <div class="page" id="page-2">
+      <div class="question">
+        <p>11. I like to do experiments<br><i>(Nkundira gukora igerageza)</i></p>
+        <select name="q11" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>12. I like to teach or train people<br><i>(Nkundira kwigisha cyangwa guhugura abantu)</i></p>
+        <select name="q12" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>13. I like trying to help people solve their problems<br><i>(Nkundira gufasha abantu gukemura ibibazo byabo)</i></p>
+        <select name="q13" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>14. I like to take care of animals<br><i>(Nkundira kwita ku nyamaswa)</i></p>
+        <select name="q14" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>15. I wouldn’t mind working 8 hours per day in an office<br><i>(Nta kibazo kuba nakora amasaha 8 ku munsi mu biro)</i></p>
+        <select name="q15" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>16. I like selling things<br><i>(Nkundira kugurisha ibintu)</i></p>
+        <select name="q16" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>17. I enjoy creative writing<br><i>(Nkundira kwandika bijyanye n'ubuhanzi)</i></p>
+        <select name="q17" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>18. I enjoy science<br><i>(Nkundira siyansi)</i></p>
+        <select name="q18" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>19. I am quick to take on new responsibilities<br><i>(Nihutira kwakira inshingano nshya)</i></p>
+        <select name="q19" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>20. I am good at keeping records of my work<br><i>(Mbasha kubika inyandiko z’ibyo nakoze)</i></p>
+        <select name="q20" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <button type="button" id="back2">&laquo; Back</button>
+      <button type="button" id="next2">Next &raquo;</button>
+    </div>
+
+    <div class="page" id="page-3">
+      <div class="question">
+        <p>21. I like to analyze things (problems/situations)<br><i>(Nkundira gusesengura ibintu (ibibazo/ibikorwa))</i></p>
+        <select name="q21" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>22. I like to play instruments or sing<br><i>(Nkundira gucuranga cyangwa kuririmba)</i></p>
+        <select name="q22" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>23. I enjoy learning about other cultures<br><i>(Nkundira kwiga ku mico y’ahandi)</i></p>
+        <select name="q23" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>24. I would like to start my own business<br><i>(Nifuza gutangiza ubucuruzi bwanjye)</i></p>
+        <select name="q24" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>25. I like to cook<br><i>(Nkundira guteka)</i></p>
+        <select name="q25" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>26. I like to act in plays<br><i>(Nkundira gukina amakinamico)</i></p>
+        <select name="q26" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>27. I am a practical person<br><i>(Ndi umuntu uharanira gushyira mu bikorwa)</i></p>
+        <select name="q27" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>28. I like working with numbers or charts<br><i>(Nkundira gukorana n’imibare cyangwa imbonerahamwe)</i></p>
+        <select name="q28" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>29. I like to get into discussions about issues<br><i>(Nkundira kujya mu biganiro ku bibazo bihari)</i></p>
+        <select name="q29" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <div class="question">
+        <p>30. I am good at keeping things neat and organized<br><i>(Mbasha gutunganya ibintu neza no kubishyira ku murongo)</i></p>
+        <select name="q30" required>
+          <option value="">--Choose one--</option>
+          <option value="1">Not like me</option>
+          <option value="2">Somewhat like me</option>
+          <option value="3">Mostly like me</option>
+          <option value="4">Exactly like me</option>
+        </select>
+      </div>
+      <button type="button" id="back3">&laquo; Back</button>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+
+  <div id="summary" style="display:none;"></div>
+<div id="backHomeBtnContainer" style="display:none; text-align:center; margin-top:20px;">
+  <a href="index.html">
+    <button style="padding: 12px 20px; font-size: 16px; background-color: orange; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      ← Back to Home
+    </button>
+  </a>
+</div>
+<div class="nav-button">
+    <a href="file:///C:/Users/LENOVO/OneDrive/Desktop/Gakoro/Index.html.html">
+      <button>Home</button>
+    </a>
+  </div>
+
+  <script>
+  const form = document.getElementById('riaform');
+  const pages = [...document.querySelectorAll('.page')];
+  let currentPage = 0;
+
+  function showPage(index) {
+    pages.forEach((p, i) => p.classList.toggle('active', i === index));
+    currentPage = index;
+  }
+
+  document.getElementById('next1').addEventListener('click', () => {
+    if (validatePage(0)) showPage(1);
+  });
+  document.getElementById('next2').addEventListener('click', () => {
+    if (validatePage(1)) showPage(2);
+  });
+
+  document.getElementById('back2').addEventListener('click', () => {
+    showPage(0);
+  });
+  document.getElementById('back3').addEventListener('click', () => {
+    showPage(1);
+  });
+
+  function validatePage(pageIndex) {
+    const inputs = pages[pageIndex].querySelectorAll('input, select');
+    for (let input of inputs) {
+      if (!input.checkValidity()) {
+        input.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Define which questions belong to which RIASEC category:
+  // (example grouping for scoring)
+  const categories = {
+    R: [1, 7, 15, 27],  // Realistic
+    I: [2, 11, 18, 21], // Investigative
+    A: [8, 17, 22, 26], // Artistic
+    S: [12, 13, 14, 23],// Social
+    E: [5, 10, 16, 24], // Enterprising
+    C: [6, 9, 20, 30]   // Conventional
+  };
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!validatePage(currentPage)) return;
+
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((val, key) => { data[key] = val; });
+
+    // Calculate simple category scores
+    const scores = { R:0, I:0, A:0, S:0, E:0, C:0 };
+    for (const [cat, qs] of Object.entries(categories)) {
+      qs.forEach(qNum => {
+        const val = parseInt(data["q"+qNum] || 0, 10);
+        scores[cat] += val;
+      });
+    }
+
+    // Send to Google Sheets Web App
+    fetch("https://script.google.com/macros/s/AKfycbzLG17ls8zvZV42PTb-i4i_Vy6z4yiieHYJj3bgtw7M4W1MOojJpvrWyu_5HK-tnOkqcQ/exec", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.text())
+    .then(() => {
+      form.style.display = 'none';
+      const summary = document.getElementById('summary');
+      summary.style.display = 'block';
+      summary.innerHTML = `<h2>Test Summary</h2>
+        <p>Thank you <b>${data.name}</b>! Here are your scores:</p>
+        <ul>
+          <li><b>Realistic (R):</b> ${scores.R}</li>
+          <li><b>Investigative (I):</b> ${scores.I}</li>
+          <li><b>Artistic (A):</b> ${scores.A}</li>
+          <li><b>Social (S):</b> ${scores.S}</li>
+          <li><b>Enterprising (E):</b> ${scores.E}</li>
+          <li><b>Conventional (C):</b> ${scores.C}</li>
+        </ul>
+        <p>Your counselor will contact you with guidance based on these results.</p>`;
+      window.scrollTo(0, 0);
+document.getElementById('backHomeBtnContainer').style.display = 'block';
+
+    })
+    .catch(() => {
+      alert("Submission failed, please try again later.");
+    });
+  });
+</script>
+<footer>
+    <div style="margin-bottom: 10px;">
+      📺 
+      <a href="https://www.youtube.com/@Gakoromediatv" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 24 17" fill="#FF0000" style="vertical-align: middle;">
+          <path d="M23.5 2.5c-.3-1.3-1.4-2.3-2.7-2.5C18.6 0 12 0 12 0s-6.6 0-8.8.1C1.9.3.8 1.3.5 2.5 0 4.7 0 8.5 0 8.5s0 3.8.5 6c.3 1.3 1.4 2.3 2.7 2.5C5.4 17 12 17 12 17s6.6 0 8.8-.1c1.3-.2 2.4-1.2 2.7-2.5.5-2.2.5-6 .5-6s0-3.8-.5-6zM9.6 12V5l6.4 3.5-6.4 3.5z"/>
+        </svg>
+        @GAKOROMEDIATV
+      </a>
+    </div>
+
+    <div style="margin: 10px;">
+      <a href="https://www.youtube.com/@Gakoromediatv?sub_confirmation=1" target="_blank" style="display: inline-block; background-color: #FF0000; color: white; padding: 10px 20px; border-radius: 4px; font-weight: bold; text-decoration: none;">
+        🔔 Subscribe
+      </a>
+    </div>
+
+    <div style="font-size: 14px;">
+      &copy; 2025 DOD MAKUZA CELESTIN. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>
