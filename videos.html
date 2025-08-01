@@ -2,83 +2,160 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GS GAKORO - Live or Latest Video</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GS GAKORO - Live and Latest Videos</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #00ADEF; /* Rwanda sky blue */
       color: white;
-      text-align: center;
       padding: 20px;
+      text-align: center;
     }
-
     h1 {
-      color: #FF7F00; /* orange */
+      color: #FF7F00; /* Orange */
       font-size: 2em;
+      margin-bottom: 10px;
     }
-
     .banner {
-      background-color: #FCD116; /* yellow */
+      background-color: #FCD116; /* Yellow */
       padding: 10px;
-      color: #007A5E; /* green */
+      color: #007A5E; /* Green */
       font-weight: bold;
       border-radius: 8px;
       margin-bottom: 20px;
+      font-size: 1.2em;
     }
-
     iframe {
       width: 90%;
       max-width: 560px;
       height: 315px;
-      border: 5px solid #FCD116; /* yellow border */
+      border: 5px solid #FCD116; /* Yellow border */
       border-radius: 10px;
     }
-
-    p {
-      color: #fff;
-      margin-top: 10px;
+    p.status {
+      font-weight: bold;
+      color: #FF7F00; /* Orange */
+      margin: 10px 0 25px 0;
       font-size: 1.1em;
+    }
+    .video-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .video-item {
+      background-color: #007A5E; /* Green */
+      border-radius: 10px;
+      width: 200px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-align: left;
+      padding: 10px;
+    }
+    .video-item:hover {
+      background-color: #005d43;
+    }
+    .video-item img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .video-title {
+      margin-top: 8px;
+      font-size: 0.9em;
+      line-height: 1.2em;
+      max-height: 2.4em;
+      overflow: hidden;
     }
   </style>
 </head>
 <body>
-  <div class="banner">🎥 Welcome to Gakoro Media tv</div>
-  <h1>Live or Latest Video</h1>
+  <div class="banner">🎥 Welcome to GS GAKORO Channel</div>
+  <h1>Live and Latest Videos</h1>
+
   <div id="video-player">Loading...</div>
+  <div id="video-list" class="video-list"></div>
 
   <script>
     const apiKey = 'AIzaSyBrIEq8jP5nhGZHSmkAoQbb0VZxzIsGwPs';
     const channelId = 'UCuQCsYE_gp4h-8GtECfcdbw';
 
-    async function loadVideo() {
-      const container = document.getElementById('video-player');
+    async function loadVideos() {
+      const playerContainer = document.getElementById('video-player');
+      const listContainer = document.getElementById('video-list');
 
       try {
-        const liveRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`);
-        const liveData = await liveRes.json();
+        // Check for live video first
+        const liveResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`);
+        const liveData = await liveResponse.json();
 
         if (liveData.items && liveData.items.length > 0) {
           const liveVideoId = liveData.items[0].id.videoId;
-          container.innerHTML = `<iframe src="https://www.youtube.com/embed/${liveVideoId}?autoplay=1" allowfullscreen></iframe><p>🔴 We are live now!</p>`;
+          playerContainer.innerHTML = `
+            <iframe src="https://www.youtube.com/embed/${liveVideoId}?autoplay=1" allowfullscreen></iframe>
+            <p class="status">🔴 We are live now!</p>
+          `;
         } else {
-          const latestRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&maxResults=1&type=video&key=${apiKey}`);
-          const latestData = await latestRes.json();
+          // No live video: show latest uploaded video
+          const latestResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&maxResults=1&type=video&key=${apiKey}`);
+          const latestData = await latestResponse.json();
 
           if (latestData.items && latestData.items.length > 0) {
-            const videoId = latestData.items[0].id.videoId;
-            container.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe><p>Latest uploaded video</p>`;
+            const latestVideoId = latestData.items[0].id.videoId;
+            playerContainer.innerHTML = `
+              <iframe src="https://www.youtube.com/embed/${latestVideoId}" allowfullscreen></iframe>
+              <p class="status">Latest uploaded video</p>
+            `;
           } else {
-            container.innerText = "No recent videos found.";
+            playerContainer.innerText = "No recent videos found.";
           }
         }
+
+        // Fetch 5 latest videos for list below player
+        const listResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&maxResults=5&type=video&key=${apiKey}`);
+        const listData = await listResponse.json();
+
+        if (listData.items && listData.items.length > 0) {
+          listContainer.innerHTML = '';
+
+          listData.items.forEach(item => {
+            const videoId = item.id.videoId;
+            const title = item.snippet.title;
+            const thumbnail = item.snippet.thumbnails.medium.url;
+
+            const videoItem = document.createElement('div');
+            videoItem.className = 'video-item';
+            videoItem.innerHTML = `
+              <img src="${thumbnail}" alt="${title}" />
+              <div class="video-title">${title}</div>
+            `;
+
+            // When clicked, update the main player iframe
+            videoItem.onclick = () => {
+              playerContainer.innerHTML = `
+                <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
+                <p class="status">Selected video</p>
+              `;
+              // Scroll to top to see the player
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            listContainer.appendChild(videoItem);
+          });
+        } else {
+          listContainer.innerText = 'No videos found.';
+        }
       } catch (error) {
-        console.error('Error loading video:', error);
-        container.innerText = "Failed to load videos.";
+        console.error('Error loading videos:', error);
+        document.getElementById('video-player').innerText = "Failed to load videos.";
+        document.getElementById('video-list').innerText = '';
       }
     }
 
-    loadVideo();
+    loadVideos();
   </script>
 </body>
 </html>
