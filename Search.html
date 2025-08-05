@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RIASEC Search with Code Title & Feedback</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fafb;
+      margin: 2rem;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 1rem;
+    }
+    .search-container {
+      max-width: 500px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .search-container input {
+      flex: 1 1 180px;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border: 2px solid #2980b9;
+      border-radius: 6px;
+      transition: border-color 0.3s ease;
+    }
+    .search-container input:focus {
+      border-color: #1abc9c;
+      outline: none;
+    }
+    .search-container button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .search-container button:hover {
+      background-color: #1abc9c;
+    }
+    #resultArea {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      min-height: 100px;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+    .student-code {
+      font-weight: 700;
+      color: #2980b9;
+      margin-bottom: 1rem;
+    }
+    .riasec-code {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #2c3e50;
+      text-decoration: underline;
+      margin-bottom: 0.7rem;
+    }
+    .feedback-message {
+      font-style: italic;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>RIASEC Search by Student Number & Class</h2>
+  <div class="search-container">
+    <input type="text" id="searchStudentNumber" placeholder="Student Number" />
+    <input type="text" id="searchClass" placeholder="Class" />
+    <button onclick="searchSheet()">Search</button>
+  </div>
+
+  <div id="resultArea">Loading data...</div>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    let dataTable;
+
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(loadData);
+
+    function loadData() {
+      // Columns: B=Student Number, C=Class, J=RIASEC Code, K=Student Code, L=RIASEC Feedback
+      const queryString = encodeURIComponent('SELECT B, C, J, K, L WHERE B IS NOT NULL');
+      const query = new google.visualization.Query(
+        'https://docs.google.com/spreadsheets/d/1f6Qj9RqF7X7WlrdVY1y1BRkmKlMOq8XQ2geeusFOaBw/gviz/tq?sheet=Sheet2&tq=' + queryString);
+
+      query.send(function(response) {
+        if (response.isError()) {
+          document.getElementById('resultArea').innerText = 'Error loading data: ' + response.getMessage();
+          return;
+        }
+        dataTable = response.getDataTable();
+        displayAllMessage();
+      });
+    }
+
+    function displayAllMessage() {
+      document.getElementById('resultArea').innerHTML = '<p>Enter Student Number and Class, then click Search.</p>';
+    }
+
+    function searchSheet() {
+      if (!dataTable) return;
+
+      const snInput = document.getElementById('searchStudentNumber').value.toLowerCase();
+      const classInput = document.getElementById('searchClass').value.toLowerCase();
+
+      let found = false;
+      let resultHTML = '';
+
+      for(let i = 0; i < dataTable.getNumberOfRows(); i++) {
+        const studentNum = dataTable.getValue(i, 0).toString().toLowerCase();
+        const className = dataTable.getValue(i, 1).toString().toLowerCase();
+
+        if (
+          studentNum.includes(snInput) &&
+          className.includes(classInput)
+        ) {
+          found = true;
+
+          const riasecCode = dataTable.getValue(i, 2);   // J - RIASEC Code
+          const studentCode = dataTable.getValue(i, 3);  // K - Student Code
+          const feedback = dataTable.getValue(i, 4);     // L - RIASEC Feedback
+
+          resultHTML += `<div class="student-code">Student Code: ${studentCode}</div>`;
+          resultHTML += `<div class="riasec-code">${riasecCode}</div>`;
+          resultHTML += `<div class="feedback-message">${feedback}</div>`;
+          break;
+        }
+      }
+
+      if (!found) {
+        resultHTML = '<p>No matching records found. Please check the inputs and try again.</p>';
+      }
+
+      document.getElementById('resultArea').innerHTML = resultHTML;
+    }
+  </script>
+</body>
+</html>
