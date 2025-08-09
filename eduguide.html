@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Radio Site with Bounce Menu</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0a1a3f;  /* Dark Blue */
+      color: white;
+    }
+
+    header {
+      padding: 10px 20px;
+      background-color: #0a1a3f;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      background-color: black;
+      padding: 5px 10px;
+      border-radius: 6px;
+    }
+    .logo img {
+      height: 40px;
+      display: block;
+    }
+
+    nav.desktop-nav {
+      display: flex;
+      gap: 20px;
+    }
+    nav.desktop-nav a {
+      color: #ff9900;  /* Light Orange */
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav.desktop-nav a:hover {
+      color: #cc5500;  /* Dark Orange */
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .menu-toggle span {
+      width: 25px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+    }
+
+    /* Mobile menu with slide-down bounce */
+    .mobile-nav {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      background: #0a1a3f;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.5s cubic-bezier(0.2, 1.2, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .mobile-nav.open {
+      max-height: 400px;
+    }
+    .mobile-nav a {
+      color: white;
+      padding: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-decoration: none;
+    }
+    .mobile-nav a:hover {
+      background-color: #cc5500;
+    }
+
+    /* Hero placeholder section */
+    .hero {
+      background: linear-gradient(to right, #cc5500, #ff9900);
+      text-align: center;
+      padding: 100px 20px;
+    }
+
+    footer {
+      background-color: #0b1d3a;
+      color: white;
+      padding: 20px 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+    footer a {
+      color: #ff9900;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      nav.desktop-nav {
+        display: none;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="logo">
+      <img src="logo.png" alt="Logo">
+    </a>
+
+    <nav class="desktop-nav">
+      <a href="#">Home</a>
+      <a href="#">Shows</a>
+      <a href="#">News</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <nav class="mobile-nav" id="mobile-nav">
+      <a href="#">Home</a>
+      <a href="#">Shows</a>
+      <a href="#">News</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Welcome to EduGuide</h1>
+<p>
+    The EduGuide System is a digital platform designed to help learners at GS GAKORO discover and follow their ideal learning pathways. 
+    It provides tools for career guidance, academic progress tracking, and personalized recommendations, enabling students to understand 
+    their strengths and interests. Teachers and administrators can also monitor student performance and engagement, ensuring timely support 
+    and guidance. Ultimately, EduGuide empowers learners to make informed decisions about their education and future careers while fostering 
+    a culture of continuous growth and achievement.
+  </p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 EduGuide. All rights reserved. | <a href="#">Privacy Policy</a></p>
+<p>EduGuide Developed by DoD Makuza Celestin.</a></p>
+
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-nav');
+
+    toggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+  </script>
+
+</body>
+</html>
