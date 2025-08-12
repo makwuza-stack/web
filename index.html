@@ -360,8 +360,29 @@
     animateMotto();
     setInterval(animateMotto, 4000);
   </script>
+  <script>
+const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL"; // Replace this!
+
+// Generate or get persistent visitor ID in localStorage
+const VISITOR_KEY = 'site_visits_visitor_id';
+let visitorId = localStorage.getItem(VISITOR_KEY);
+if (!visitorId) {
+  visitorId = 'visitor-' + Math.random().toString(36).substr(2, 9);
+  localStorage.setItem(VISITOR_KEY, visitorId);
+}
+
+// Record the visit to Google Sheets via your Apps Script
+fetch(SCRIPT_URL + "?visitor=" + encodeURIComponent(visitorId), { method: 'POST' })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Visit recorded:', data);
+  })
+  .catch(err => console.error('Error recording visit:', err));
+</script>
+
 </body>
 </html>
+
 
 
 
