@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Site Visits Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: #121212;
+    color: #fff;
+  }
+  header {
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(90deg, #ff6600, #ff9900);
+  }
+  header h1 {
+    margin: 0;
+    font-size: 1.8em;
+  }
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  .card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .card h2 {
+    font-size: 2.5em;
+    margin: 0;
+    color: #ff9900;
+    transition: all 0.3s ease;
+  }
+  .card p {
+    color: #aaa;
+    margin: 5px 0 0;
+  }
+  canvas {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 15px;
+    max-width: 100%;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  table th, table td {
+    padding: 12px;
+    border-bottom: 1px solid #333;
+    text-align: left;
+  }
+  table th {
+    background: #2a2a2a;
+    color: #ff9900;
+  }
+  tr:hover {
+    background: rgba(255, 153, 0, 0.1);
+  }
+  #resetBtn {
+    background: #ff3300;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin: 10px auto 30px;
+    display: block;
+    max-width: 200px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📊 Site Analytics Dashboard</h1>
+</header>
+
+<div class="dashboard">
+  <div class="card">
+    <h2 id="totalVisits">—</h2>
+    <p>Total Visits</p>
+  </div>
+  <div class="card">
+    <h2 id="uniqueVisitors">—</h2>
+    <p>Unique Visitors</p>
+  </div>
+</div>
+
+<div style="padding: 0 20px 20px 20px;">
+  <canvas id="visitsChart" height="100"></canvas>
+</div>
+
+<div style="padding: 20px;">
+  <h2 style="color:#ff9900;">Recent Visits</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Date & Time</th>
+        <th>Visitor ID</th>
+      </tr>
+    </thead>
+    <tbody id="recentVisits">
+      <tr><td colspan="2" style="text-align:center;">Loading...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<button id="resetBtn">🔄 Reset Counts</button>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjHrzcVJu1diLnp4YY6WO1d0yOmg_NDXv9BCCu7XUzb33A8uCLwSK0x85_exnjNi6Vmg/exec"; // Your Apps Script URL
+
+// Check if logged in; else redirect to login page
+if (localStorage.getItem('isLoggedIn') !== 'true') {
+  window.location.href = 'index.html';
+}
+
+const VISITOR_KEY = 'site_visits_visitor_id';
+let visitorId = localStorage.getItem(VISITOR_KEY);
+if (!visitorId) {
+  visitorId = 'visitor-' + Math.random().toString(36).substr(2, 9);
+  localStorage.setItem(VISITOR_KEY, visitorId);
+}
+
+async function recordVisit() {
+  try {
+    const res = await fetch(SCRIPT_URL + "?visitor=" + encodeURIComponent(visitorId), { method: 'POST' });
+    const data = await res.json();
+    updateDashboard(data);
+  } catch (err) {
+    console.error("Error recording visit", err);
+  }
+}
+
+function updateDashboard(data) {
+  animateCount('totalVisits', data.total);
+  animateCount('uniqueVisitors', data.unique);
+  updateRecent(data.recent);
+  updateChart(data.daily);
+}
+
+function animateCount(id, value) {
+  let el = document.getElementById(id);
+  let current = 0;
+  const increment = value / 50;
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= value) {
+      current = value;
+      clearInterval(timer);
+    }
+    el.textContent = Math.floor(current);
+  }, 20);
+}
+
+function updateRecent(rows) {
+  const tbody = document.getElementById('recentVisits');
+  tbody.innerHTML = '';
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="2" style="text-align:center;">No recent visits</td></tr>';
+    return;
+  }
+  rows.forEach(r => {
+    const tr = document.createElement('tr');
+    const tdDate = document.createElement('td');
+    tdDate.textContent = new Date(r.time).toLocaleString();
+    const tdVisitor = document.createElement('td');
+    tdVisitor.textContent = r.visitor;
+    tr.appendChild(tdDate);
+    tr.appendChild(tdVisitor);
+    tbody.appendChild(tr);
+  });
+}
+
+let chart;
+function updateChart(daily) {
+  const ctx = document.getElementById('visitsChart').getContext('2d');
+  const labels = daily.map(d => d.date);
+  const counts = daily.map(d => d.count);
+
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Daily Visits',
+        data: counts,
+        backgroundColor: '#ff9900',
+        borderRadius: 5
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { labels: { color: '#fff' } }
+      },
+      scales: {
+        x: { ticks: { color: '#fff' }, grid: { color: '#333' } },
+        y: { ticks: { color: '#fff' }, grid: { color: '#333' }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+// Reset button
+document.getElementById('resetBtn').addEventListener('click', async () => {
+  const confirmed = confirm('Are you sure you want to reset all counts?');
+  if (!confirmed) return;
+
+  const pass = prompt('Enter admin password:');
+  if (!pass) return alert('Password is required.');
+
+  try {
+    const res = await fetch(`${SCRIPT_URL}?reset=true&password=${encodeURIComponent(pass)}`, { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      alert('Counts reset successfully.');
+      updateDashboard(data);
+    } else {
+      alert('Incorrect password or error resetting.');
+    }
+  } catch (err) {
+    console.error('Reset error:', err);
+    alert('Error during reset.');
+  }
+});
+
+recordVisit();
+</script>
+
+</body>
+</html>

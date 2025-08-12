@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin Login - Site Dashboard</title>
+<style>
+  body {
+    background: #121212;
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .login-box {
+    background: #1e1e1e;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255,153,0,0.5);
+    text-align: center;
+    width: 300px;
+  }
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    margin: 1rem 0;
+    font-size: 1rem;
+  }
+  button {
+    background: #ff9900;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #121212;
+    width: 100%;
+  }
+  #error {
+    color: #ff3300;
+    margin-top: 10px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>🔐 Admin Login</h2>
+    <input type="password" id="password" placeholder="Enter Password" />
+    <button onclick="login()">Login</button>
+    <p id="error">Wrong password, try again!</p>
+  </div>
+
+<script>
+  const ADMIN_PASS = "GAKORO2025"; // CHANGE THIS to your password
+
+  function login() {
+    const input = document.getElementById('password').value;
+    const error = document.getElementById('error');
+    if (input === ADMIN_PASS) {
+      localStorage.setItem('isLoggedIn', 'true');
+      window.location.href = 'dashboard.html';
+    } else {
+      error.style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
