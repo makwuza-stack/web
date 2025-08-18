@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BSSA Form - EduGuide</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(to right, #ffb347, #1e90ff); margin:0; padding:0; }
+    .container { width:400px; margin:20px auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.25); }
+    h1 { text-align:center; color:#1e90ff; font-size:20px; margin-bottom:10px; }
+    .logo { text-align:center; font-weight:bold; font-size:20px; margin-bottom:15px; }
+    .logo span.edu { color:#1e90ff; } .logo span.guide { color:#ff8800; }
+    .note { background:#e0f7ff; color:#007acc; border-left:5px solid #1e90ff; padding:10px; border-radius:5px; margin-bottom:15px; font-size:14px; }
+    .meta input { width:100%; padding:12px; margin-bottom:10px; border:1px solid #1e90ff; border-radius:10px; outline:none; font-size:16px; }
+    .meta input:focus { border-color:#ff8800; box-shadow:0 0 5px #ff8800; }
+    fieldset { border:1px solid #ffd580; border-radius:10px; padding:20px; margin-bottom:20px; background:#fff7e6; display:none; }
+    legend { font-weight:bold; color:#ff8800; font-size:16px; }
+    label { display:block; margin:5px 0; cursor:pointer; }
+    label.selected { background:#cce7ff; border-radius:5px; padding:3px 5px; }
+    .nav-buttons { display:flex; justify-content:space-between; margin-top:15px; }
+    button { padding:12px; border:none; border-radius:10px; background:#1e90ff; color:white; font-size:16px; cursor:pointer; width:48%; }
+    button:hover { background:#005fa3; }
+    button.reset { background:#ff8800; width:100%; margin-top:10px; }
+    button.reset:hover { background:#cc7000; }
+    .progress { text-align:center; margin-bottom:10px; font-size:14px; color:#007acc; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Behavioural Student Self Assessment Form (BSSA)</h1>
+    <div class="logo"><span class="edu">Edu</span><span class="guide">Guide</span></div>
+    <div class="note">Please answer honestly. Your responses help improve your learning environment.</div>
+
+    <form id="behaviorForm">
+      <div class="meta">
+        <input type="text" name="entry.YOUR_NAME_ENTRY_ID" placeholder="Student Name" required>
+        <input type="text" name="entry.YOUR_CLASS_ENTRY_ID" placeholder="Class" required>
+      </div>
+      <div class="progress" id="progress">Question 1 of 25</div>
+      <div id="questions"></div>
+      <div class="actions" id="formActions">
+        <button type="button" class="reset">Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const behaviors = [
+      {text: "Raise hand in class", negative:false}, {text:"Act up in line", negative:true}, 
+      {text:"Arrive to class on time", negative:false}, {text:"Do what I am told", negative:false}, 
+      {text:"Behave for a substitute", negative:false}, {text:"Talk in class", negative:true}, 
+      {text:"Write on desks", negative:true}, {text:"Write on chairs", negative:true}, 
+      {text:"Lean back in chairs", negative:true}, {text:"Chew gum in class", negative:true}, 
+      {text:"Throw objects in class", negative:true}, {text:"Touch other students", negative:true}, 
+      {text:"Take other’s things", negative:true}, {text:"Have all materials for class", negative:false}, 
+      {text:"Help teacher when asked", negative:false}, {text:"Act politely", negative:false}, 
+      {text:"Pay attention in class", negative:false}, {text:"Clean up desk area", negative:false}, 
+      {text:"Accept extra duties in class", negative:false}, {text:"Use restroom time properly", negative:false}, 
+      {text:"Turn in found objects", negative:false}, {text:"Obey school rules", negative:false}, 
+      {text:"Obey classroom rules", negative:false}, {text:"Copies work from others", negative:true}, 
+      {text:"Use abusive language", negative:true}
+    ];
+
+    const optionTexts = ["Always","Usually","Sometimes","Hardly Ever","Never"];
+    const optionValuesPositive = [5,4,3,2,1];
+    const optionValuesNegative = [1,2,3,4,5];
+    const negativeQuestions = behaviors.map((b,i)=>b.negative?i:null).filter(i=>i!==null);
+
+    const container = document.getElementById("questions");
+    const progress = document.getElementById("progress");
+
+    behaviors.forEach((b,idx)=>{
+      const fs = document.createElement("fieldset");
+      fs.id = `question_${idx}`;
+      fs.innerHTML = `<legend>${idx+1}. ${b.text}</legend>`;
+      optionTexts.forEach((opt,oIdx)=>{
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        input.type='radio';
+        input.name=`entry.QUESTION_${idx}_ENTRY_ID`;
+        input.value = b.negative ? optionValuesNegative[oIdx] : optionValuesPositive[oIdx];
+        input.required = true;
+        input.addEventListener('change', ()=>{
+          document.querySelectorAll(`#question_${idx} label`).forEach(l=>l.classList.remove('selected'));
+          label.classList.add('selected');
+        });
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(` ${opt}`));
+        fs.appendChild(label);
+      });
+
+      const navDiv = document.createElement('div');
+      navDiv.classList.add('nav-buttons');
+
+      const backBtn = document.createElement('button');
+      backBtn.type="button"; backBtn.textContent="Back";
+      backBtn.onclick=()=>showQuestion(idx-1);
+
+      const nextBtn = document.createElement('button');
+      nextBtn.type="button"; nextBtn.textContent="Next";
+      nextBtn.onclick=()=>showQuestion(idx+1);
+
+      if(idx===0) backBtn.style.visibility='hidden';
+      if(idx===behaviors.length-1){ 
+        nextBtn.textContent="Submit";
+        nextBtn.onclick=submitForm;
+      }
+
+      navDiv.appendChild(backBtn);
+      navDiv.appendChild(nextBtn);
+      fs.appendChild(navDiv);
+      container.appendChild(fs);
+    });
+
+    function showQuestion(index){
+      document.querySelectorAll('fieldset').forEach(fs=>fs.style.display='none');
+      if(index>=0 && index<behaviors.length){
+        document.getElementById(`question_${index}`).style.display='block';
+        progress.textContent=`Question ${index+1} of 25`;
+      }
+    }
+
+    function submitForm(){
+      const form = document.getElementById("behaviorForm");
+      const data = {
+        student_name: form.querySelector('[name="entry.YOUR_NAME_ENTRY_ID"]').value,
+        student_class: form.querySelector('[name="entry.YOUR_CLASS_ENTRY_ID"]').value
+      };
+      for(let i=0;i<25;i++){
+        const q = form.querySelector(`input[name="entry.QUESTION_${i}_ENTRY_ID"]:checked`);
+        let val = q ? Number(q.value) : 0;
+        if(negativeQuestions.includes(i)) val = 6 - val; // invert negative
+        data[`Q${i+1}`] = val;
+      }
+
+      const scriptURL = "https://script.google.com/macros/s/AKfycbxRY-mEz9JPflUnZwqn4qz5ZOetau_Hx-6SuB-G4WCK7SKdTxctCB55JUK45ps9JLAsrw/exec"; // Replace with Apps Script URL
+      fetch(scriptURL,{
+        method:'POST',
+        body: new URLSearchParams(data)
+      }).then(r=>{
+        alert("Form submitted successfully!");
+        form.reset();
+        showQuestion(0);
+      }).catch(e=>{
+        console.error(e);
+        alert("Error submitting form.");
+      });
+    }
+
+    document.querySelector('.reset').addEventListener('click',()=>{
+      const pwd = prompt('Enter password to reset form:');
+      if(pwd==='GAKORO2025'){
+        document.getElementById("behaviorForm").reset();
+        showQuestion(0);
+      }
+    });
+
+    showQuestion(0);
+  </script>
+</body>
+</html>
