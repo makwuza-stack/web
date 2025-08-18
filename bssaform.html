@@ -3,160 +3,123 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BSSA Form - EduGuide</title>
+  <title>Behaviour Checklist Form</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(to right, #ffb347, #1e90ff); margin:0; padding:0; }
-    .container { width:400px; margin:20px auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.25); }
-    h1 { text-align:center; color:#1e90ff; font-size:20px; margin-bottom:10px; }
-    .logo { text-align:center; font-weight:bold; font-size:20px; margin-bottom:15px; }
-    .logo span.edu { color:#1e90ff; } .logo span.guide { color:#ff8800; }
-    .note { background:#e0f7ff; color:#007acc; border-left:5px solid #1e90ff; padding:10px; border-radius:5px; margin-bottom:15px; font-size:14px; }
-    .meta input { width:100%; padding:12px; margin-bottom:10px; border:1px solid #1e90ff; border-radius:10px; outline:none; font-size:16px; }
-    .meta input:focus { border-color:#ff8800; box-shadow:0 0 5px #ff8800; }
-    fieldset { border:1px solid #ffd580; border-radius:10px; padding:20px; margin-bottom:20px; background:#fff7e6; display:none; }
-    legend { font-weight:bold; color:#ff8800; font-size:16px; }
-    label { display:block; margin:5px 0; cursor:pointer; }
-    label.selected { background:#cce7ff; border-radius:5px; padding:3px 5px; }
-    .nav-buttons { display:flex; justify-content:space-between; margin-top:15px; }
-    button { padding:12px; border:none; border-radius:10px; background:#1e90ff; color:white; font-size:16px; cursor:pointer; width:48%; }
-    button:hover { background:#005fa3; }
-    button.reset { background:#ff8800; width:100%; margin-top:10px; }
-    button.reset:hover { background:#cc7000; }
-    .progress { text-align:center; margin-bottom:10px; font-size:14px; color:#007acc; }
+    body { font-family: Arial, sans-serif; background:#f7f7fb; padding:20px; }
+    h1 { text-align:center; }
+    table { width:100%; border-collapse:collapse; margin:20px 0; background:#fff; }
+    th, td { border:1px solid #ddd; padding:8px; text-align:center; }
+    th:first-child, td:first-child { text-align:left; }
+    th { background:#f0f0f0; }
+    .field { margin:10px 0; }
+    label { font-weight:bold; }
+    input, button { padding:8px; border-radius:5px; border:1px solid #ccc; width:100%; }
+    button { background:#2563eb; color:white; cursor:pointer; }
+    button:hover { background:#1e4db7; }
+    .toast { display:none; margin-top:10px; padding:10px; border-radius:6px; }
+    .toast.ok { background:#d1fae5; color:#065f46; }
+    .toast.err { background:#fee2e2; color:#7f1d1d; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Behavioural Student Self Assessment Form (BSSA)</h1>
-    <div class="logo"><span class="edu">Edu</span><span class="guide">Guide</span></div>
-    <div class="note">Please answer honestly. Your responses help improve your learning environment.</div>
+  <h1>Behaviour Checklist</h1>
 
-    <form id="behaviorForm">
-      <div class="meta">
-        <input type="text" name="entry.YOUR_NAME_ENTRY_ID" placeholder="Student Name" required>
-        <input type="text" name="entry.YOUR_CLASS_ENTRY_ID" placeholder="Class" required>
-      </div>
-      <div class="progress" id="progress">Question 1 of 25</div>
-      <div id="questions"></div>
-      <div class="actions" id="formActions">
-        <button type="button" class="reset">Reset</button>
-      </div>
-    </form>
-  </div>
+  <form id="behaviourForm">
+    <div class="field">
+      <label for="studentName">Student Name *</label>
+      <input id="studentName" name="Student Name" required />
+    </div>
+    <div class="field">
+      <label for="studentClass">Class *</label>
+      <input id="studentClass" name="Class" required />
+    </div>
+    <div class="field">
+      <label for="date">Date *</label>
+      <input id="date" name="Date" type="date" required />
+    </div>
+    <div class="field">
+      <label for="teacher">Teacher</label>
+      <input id="teacher" name="Teacher" />
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Behaviour</th>
+          <th>A</th><th>U</th><th>S</th><th>H</th><th>N</th>
+        </tr>
+      </thead>
+      <tbody id="behaviourRows"></tbody>
+    </table>
+
+    <button type="submit">Submit</button>
+    <div id="toastOk" class="toast ok">✅ Saved! Your response was sent.</div>
+    <div id="toastErr" class="toast err">❌ Failed to submit. Please try again.</div>
+  </form>
 
   <script>
-    const behaviors = [
-      {text: "Raise hand in class", negative:false}, {text:"Act up in line", negative:true}, 
-      {text:"Arrive to class on time", negative:false}, {text:"Do what I am told", negative:false}, 
-      {text:"Behave for a substitute", negative:false}, {text:"Talk in class", negative:true}, 
-      {text:"Write on desks", negative:true}, {text:"Write on chairs", negative:true}, 
-      {text:"Lean back in chairs", negative:true}, {text:"Chew gum in class", negative:true}, 
-      {text:"Throw objects in class", negative:true}, {text:"Touch other students", negative:true}, 
-      {text:"Take other’s things", negative:true}, {text:"Have all materials for class", negative:false}, 
-      {text:"Help teacher when asked", negative:false}, {text:"Act politely", negative:false}, 
-      {text:"Pay attention in class", negative:false}, {text:"Clean up desk area", negative:false}, 
-      {text:"Accept extra duties in class", negative:false}, {text:"Use restroom time properly", negative:false}, 
-      {text:"Turn in found objects", negative:false}, {text:"Obey school rules", negative:false}, 
-      {text:"Obey classroom rules", negative:false}, {text:"Copies work from others", negative:true}, 
-      {text:"Use abusive language", negative:true}
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxNkQa1okQg_vksdSMjv5ZgEgSu_8f6fA2iZn7Y6-kDS1U2vHMHPvX0u9pxB5JM1uHE/exec";
+
+    const behaviours = [
+      "Raise hand in class",
+      "Act up in line",
+      "Arrive to class on time",
+      "Do what I am told",
+      "Behave for a substitute",
+      "Talk in class",
+      "Write on desks",
+      "Write on chairs",
+      "Lean back in chairs",
+      "Chew gum in class",
+      "Throw objects in class",
+      "Touch other students",
+      "Take other’s things",
+      "Have all materials for class",
+      "Help teacher when asked",
+      "Act politely",
+      "Pay attention in class",
+      "Clean up desk area",
+      "Accept extra duties in class",
+      "Use restroom time properly",
+      "Turn in found objects",
+      "Obey school rules",
+      "Obey classroom rules",
+      "Copies work from others",
+      "Use abusive language"
     ];
 
-    const optionTexts = ["Always","Usually","Sometimes","Hardly Ever","Never"];
-    const optionValuesPositive = [5,4,3,2,1];
-    const optionValuesNegative = [1,2,3,4,5];
-    const negativeQuestions = behaviors.map((b,i)=>b.negative?i:null).filter(i=>i!==null);
+    const tbody = document.getElementById('behaviourRows');
+    const scale = ['A','U','S','H','N'];
 
-    const container = document.getElementById("questions");
-    const progress = document.getElementById("progress");
-
-    behaviors.forEach((b,idx)=>{
-      const fs = document.createElement("fieldset");
-      fs.id = `question_${idx}`;
-      fs.innerHTML = `<legend>${idx+1}. ${b.text}</legend>`;
-      optionTexts.forEach((opt,oIdx)=>{
-        const label = document.createElement('label');
-        const input = document.createElement('input');
-        input.type='radio';
-        input.name=`entry.QUESTION_${idx}_ENTRY_ID`;
-        input.value = b.negative ? optionValuesNegative[oIdx] : optionValuesPositive[oIdx];
-        input.required = true;
-        input.addEventListener('change', ()=>{
-          document.querySelectorAll(`#question_${idx} label`).forEach(l=>l.classList.remove('selected'));
-          label.classList.add('selected');
-        });
-        label.appendChild(input);
-        label.appendChild(document.createTextNode(` ${opt}`));
-        fs.appendChild(label);
-      });
-
-      const navDiv = document.createElement('div');
-      navDiv.classList.add('nav-buttons');
-
-      const backBtn = document.createElement('button');
-      backBtn.type="button"; backBtn.textContent="Back";
-      backBtn.onclick=()=>showQuestion(idx-1);
-
-      const nextBtn = document.createElement('button');
-      nextBtn.type="button"; nextBtn.textContent="Next";
-      nextBtn.onclick=()=>showQuestion(idx+1);
-
-      if(idx===0) backBtn.style.visibility='hidden';
-      if(idx===behaviors.length-1){ 
-        nextBtn.textContent="Submit";
-        nextBtn.onclick=submitForm;
-      }
-
-      navDiv.appendChild(backBtn);
-      navDiv.appendChild(nextBtn);
-      fs.appendChild(navDiv);
-      container.appendChild(fs);
+    behaviours.forEach((b, idx) => {
+      const key = `B${idx+1}`;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><label>${b}</label></td>
+        ${scale.map(v => `<td><input type="radio" name="${b}" value="${v}" required></td>`).join('')}
+      `;
+      tbody.appendChild(tr);
     });
 
-    function showQuestion(index){
-      document.querySelectorAll('fieldset').forEach(fs=>fs.style.display='none');
-      if(index>=0 && index<behaviors.length){
-        document.getElementById(`question_${index}`).style.display='block';
-        progress.textContent=`Question ${index+1} of 25`;
-      }
-    }
+    const form = document.getElementById('behaviourForm');
+    const ok = document.getElementById('toastOk');
+    const err = document.getElementById('toastErr');
 
-    function submitForm(){
-      const form = document.getElementById("behaviorForm");
-      const data = {
-        student_name: form.querySelector('[name="entry.YOUR_NAME_ENTRY_ID"]').value,
-        student_class: form.querySelector('[name="entry.YOUR_CLASS_ENTRY_ID"]').value
-      };
-      for(let i=0;i<25;i++){
-        const q = form.querySelector(`input[name="entry.QUESTION_${i}_ENTRY_ID"]:checked`);
-        let val = q ? Number(q.value) : 0;
-        if(negativeQuestions.includes(i)) val = 6 - val; // invert negative
-        data[`Q${i+1}`] = val;
-      }
+    function show(el){ el.style.display='block'; setTimeout(()=> el.style.display='none', 4000); }
 
-      const scriptURL = "https://script.google.com/macros/s/AKfycbxCtiDo1ZR29nPtq4TAgmCyBrz0ho7xFirAKUJDYuXW95n5r3Z61fIaM0chpjVNHgPjag/exec"; // Replace with Apps Script URL
-      fetch(scriptURL,{
-        method:'POST',
-        body: new URLSearchParams(data)
-      }).then(r=>{
-        alert("Form submitted successfully!");
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      try {
+        const res = await fetch(WEB_APP_URL, { method: 'POST', body: fd });
+        if (!res.ok) throw new Error('Bad response');
         form.reset();
-        showQuestion(0);
-      }).catch(e=>{
+        show(ok);
+      } catch(e) {
         console.error(e);
-        alert("Error submitting form.");
-      });
-    }
-
-    document.querySelector('.reset').addEventListener('click',()=>{
-      const pwd = prompt('Enter password to reset form:');
-      if(pwd==='GAKORO2025'){
-        document.getElementById("behaviorForm").reset();
-        showQuestion(0);
+        show(err);
       }
     });
-
-    showQuestion(0);
   </script>
 </body>
 </html>
-
