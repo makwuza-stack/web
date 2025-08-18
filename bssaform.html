@@ -2,104 +2,172 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Discipline Evaluation Form</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
-    h2 { color: #2c3e50; }
+    h1 { text-align: center; }
     .question { margin-bottom: 15px; }
-    .options label { margin-right: 15px; }
-    .submit-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #3498db;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .submit-btn:hover { background: #2980b9; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    select, input { width: 100%; padding: 5px; }
+    .submit-btn { background: green; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+    .submit-btn:hover { background: darkgreen; }
+    #thankyou_message { display: none; color: blue; font-weight: bold; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h2>Student Discipline Evaluation</h2>
-  <form id="disciplineForm">
-    <label>Student Name: <input type="text" name="name" required></label><br><br>
-    <label>Class: <input type="text" name="class" required></label><br><br>
-    <label>Student Number: <input type="text" name="student_number" required></label><br><br>
+  <h1>Discipline Evaluation Form</h1>
 
-    <div id="questions"></div>
+  <form action="YOUR_GOOGLE_SCRIPT_URL_HERE"
+        method="POST" target="hidden_iframe" onsubmit="showThankYou()">
 
-    <button type="submit" class="submit-btn">Submit</button>
+    <div class="question">
+      <label>Student Name:</label>
+      <input type="text" name="StudentName" required>
+    </div>
+
+    <div class="question">
+      <label>Class:</label>
+      <input type="text" name="Class" required>
+    </div>
+
+    <!-- Discipline Questions -->
+    <div class="question"><label>Raise hand in class</label>
+      <select name="RaiseHand" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Act up in line</label>
+      <select name="ActUpInLine" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Arrive to class on time</label>
+      <select name="OnTime" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Do what I am told</label>
+      <select name="Obedience" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Behave for a substitute teacher</label>
+      <select name="SubstituteBehavior" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Talk in class</label>
+      <select name="TalkInClass" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Write on desks/walls</label>
+      <select name="WriteOnDesks" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Chew gum in class</label>
+      <select name="ChewGum" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Be respectful to teachers</label>
+      <select name="RespectTeachers" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Be respectful to classmates</label>
+      <select name="RespectClassmates" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Do homework on time</label>
+      <select name="HomeworkOnTime" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Take care of school property</label>
+      <select name="SchoolPropertyCare" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Keep classroom clean</label>
+      <select name="ClassroomClean" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Follow school rules</label>
+      <select name="FollowRules" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Stay focused in class</label>
+      <select name="StayFocused" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Help classmates</label>
+      <select name="HelpClassmates" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Use polite language</label>
+      <select name="PoliteLanguage" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <div class="question"><label>Participate in class activities</label>
+      <select name="Participation" required>
+        <option value="">Select</option><option>Always</option><option>Usually</option>
+        <option>Sometimes</option><option>Hardly Ever</option><option>Never</option>
+      </select>
+    </div>
+
+    <button class="submit-btn" type="submit">Submit</button>
   </form>
 
-  <p id="response"></p>
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+  <div id="thankyou_message">✅ Thank you! Your response has been recorded.</div>
 
   <script>
-    const questions = [
-      "Raise hand in class",
-      "Act up in line",
-      "Arrive to class on time",
-      "Do what I am told",
-      "Behave for a substitute",
-      "Talk in class",
-      "Write on desks",
-      "Write on chairs",
-      "Lean back in chairs",
-      "Chew gum in class",
-      "Throw objects in class",
-      "Touch other students",
-      "Take other’s things",
-      "Have all materials for class",
-      "Help teacher when asked",
-      "Act politely",
-      "Pay attention in class",
-      "Clean up desk area",
-      "Accept extra duties in class",
-      "Use restroom time properly",
-      "Turn in found objects",
-      "Obey school rules",
-      "Obey classroom rules",
-      "Copies work from others",
-      "Use abusive language"
-    ];
-
-    const options = ["Always", "Usually", "Sometimes", "Hardly Ever", "Never"];
-    const formContainer = document.getElementById("questions");
-
-    questions.forEach((q, index) => {
-      const div = document.createElement("div");
-      div.className = "question";
-      div.innerHTML = `<p><b>${index + 1}. ${q}</b></p>`;
-      const opts = options.map(o =>
-        `<label><input type="radio" name="${q.toLowerCase().replace(/[^a-z0-9]/g, '_')}" value="${o}" required> ${o}</label>`
-      ).join(" ");
-      div.innerHTML += `<div class="options">${opts}</div>`;
-      formContainer.appendChild(div);
-    });
-
-    document.getElementById("disciplineForm").addEventListener("submit", function(e){
-      e.preventDefault();
-
-      const formData = new FormData(this);
-      const data = {};
-      formData.forEach((value, key) => { data[key] = value });
-
-      fetch("https://script.google.com/macros/s/AKfycbzZkiWKiojCfL748UZYZ6nhtP26C4uhL89mswJaJnHpsw8tCQAQ3R2WgKjpmj7UMk34/exec", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => res.json())
-      .then(response => {
-        document.getElementById("response").innerText =
-          "✅ Submitted successfully! Discipline Score: " + response.score;
-        document.getElementById("disciplineForm").reset();
-      })
-      .catch(err => {
-        document.getElementById("response").innerText =
-          "❌ Submission failed: " + err.message;
-      });
-    });
+    function showThankYou() {
+      document.getElementById('thankyou_message').style.display = 'block';
+    }
   </script>
 </body>
 </html>
