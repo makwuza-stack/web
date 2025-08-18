@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Radio Site with Bounce Menu</title>
+  <title>EduGuide - Best Students</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #0a1a3f;  /* Dark Blue */
+      background-color: #0a1a3f;
       color: white;
     }
 
     header {
       padding: 10px 20px;
       background-color: #0a1a3f;
-      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -36,12 +35,12 @@
       gap: 20px;
     }
     nav.desktop-nav a {
-      color: #ff9900;  /* Light Orange */
+      color: #ff9900;
       text-decoration: none;
       font-weight: bold;
     }
     nav.desktop-nav a:hover {
-      color: #cc5500;  /* Dark Orange */
+      color: #cc5500;
     }
 
     .menu-toggle {
@@ -57,7 +56,6 @@
       border-radius: 2px;
     }
 
-    /* Mobile menu with slide-down bounce */
     .mobile-nav {
       position: absolute;
       top: 60px;
@@ -83,11 +81,109 @@
       background-color: #cc5500;
     }
 
-    /* Hero placeholder section */
-    .hero {
-      background: linear-gradient(to right, #cc5500, #ff9900);
+    /* Hero card */
+    .hero-card {
+      background-color: #11295b;
+      border-radius: 12px;
+      padding: 40px 20px;
+      margin: 30px auto;
+      max-width: 900px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .hero-card h1 {
+      margin-top: 0;
+      color: #ff9900;
       text-align: center;
-      padding: 100px 20px;
+    }
+    .hero-card p {
+      line-height: 1.6;
+      text-align: justify;
+      color: #ffffff;
+    }
+
+    /* Student recognition */
+    .students-section {
+      max-width: 900px;
+      margin: 40px auto;
+      text-align: center;
+    }
+    .students-section h2 {
+      color: #ff9900;
+      margin-bottom: 30px;
+    }
+    .students {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .student-card {
+      position: relative;
+      background-color: #0b1d3a;
+      border: 2px solid #ff9900;
+      border-radius: 8px;
+      width: 160px;
+      text-align: center;
+      padding: 10px;
+    }
+    .student-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #cc5500;
+      margin-bottom: 10px;
+    }
+
+    /* Discipline badge with sparkle starburst */
+    .student-card .badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #ff9900;
+      color: #0a1a3f;
+      font-weight: bold;
+      padding: 5px 7px;
+      border-radius: 50%;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      animation: pulse 1.5s infinite alternate;
+    }
+    .student-card .badge::before,
+    .student-card .badge::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background-color: #ffdd33;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      box-shadow:
+        15px 0 #ffdd33,
+        -15px 0 #ffdd33,
+        0 15px #ffdd33,
+        0 -15px #ffdd33,
+        10px 10px #ffdd33,
+        -10px -10px #ffdd33,
+        10px -10px #ffdd33,
+        -10px 10px #ffdd33;
+      animation: sparkle-burst 2s infinite linear;
+    }
+    .student-card .badge::after {
+      animation-delay: 1s;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 153, 0, 0.7), 0 0 10px rgba(255, 153, 0, 0.5); }
+      50% { transform: scale(1.2); box-shadow: 0 0 10px rgba(255, 204, 85, 1), 0 0 20px rgba(255, 204, 85, 0.7); }
+      100% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 153, 0, 0.7), 0 0 10px rgba(255, 153, 0, 0.5); }
+    }
+    @keyframes sparkle-burst {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
     }
 
     footer {
@@ -113,6 +209,9 @@
       .menu-toggle {
         display: flex;
       }
+      .students {
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -137,28 +236,53 @@
     </div>
 
     <nav class="mobile-nav" id="mobile-nav">
-      <a href="#">Home</a>
-      <a href="#">Shows</a>
+      <a href="index.html">Home</a>
+      <a href="Search.html">RIASEC Result</a>
       <a href="#">News</a>
-      <a href="#">Contact</a>
+      <a href="admin.html">Admin Page</a>
     </nav>
   </header>
 
-  <section class="hero">
+  <section class="hero-card">
     <h1>Welcome to EduGuide</h1>
-<p>
-    The EduGuide System is a digital platform designed to help learners at GS GAKORO discover and follow their ideal learning pathways. 
-    It provides tools for career guidance, academic progress tracking, and personalized recommendations, enabling students to understand 
-    their strengths and interests. Teachers and administrators can also monitor student performance and engagement, ensuring timely support 
-    and guidance. Ultimately, EduGuide empowers learners to make informed decisions about their education and future careers while fostering 
-    a culture of continuous growth and achievement.
-  </p>
+    <p>
+      The EduGuide System is a digital platform designed to help learners at GS GAKORO discover and follow their ideal learning pathways. 
+      It provides tools for career guidance, academic progress tracking, and personalized recommendations, enabling students to understand 
+      their strengths and interests. Teachers and administrators can also monitor student performance and engagement, ensuring timely support 
+      and guidance. Ultimately, EduGuide empowers learners to make informed decisions about their education and future careers while fostering 
+      a culture of continuous growth and achievement.
+    </p>
+  </section>
+
+  <section class="students-section">
+    <h2>Best Performing Students in Discipline</h2>
+    <div class="students">
+      <div class="student-card">
+        <div class="badge">★</div>
+        <img src="student1.jpg" alt="Student 1">
+        <p>Student 1</p>
+      </div>
+      <div class="student-card">
+        <div class="badge">★</div>
+        <img src="student2.jpg" alt="Student 2">
+        <p>Student 2</p>
+      </div>
+      <div class="student-card">
+        <div class="badge">★</div>
+        <img src="student3.jpg" alt="Student 3">
+        <p>Student 3</p>
+      </div>
+      <div class="student-card">
+        <div class="badge">★</div>
+        <img src="student4.jpg" alt="Student 4">
+        <p>Student 4</p>
+      </div>
+    </div>
   </section>
 
   <footer>
     <p>&copy; 2025 EduGuide. All rights reserved. | <a href="#">Privacy Policy</a></p>
-<p>EduGuide Developed by DoD Makuza Celestin.</a></p>
-
+    <p>EduGuide Developed by DoD Makuza Celestin.</p>
   </footer>
 
   <script>
@@ -172,8 +296,3 @@
 
 </body>
 </html>
-
-
-
-
-
