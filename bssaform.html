@@ -1,203 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BSSA Discipline Form</title>
+  <meta charset="UTF-8">
+  <title>Discipline Form - GS GAKORO</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    form {
-      max-width: 800px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin: 15px 0 5px;
-      font-weight: bold;
-    }
-    input[type="text"], select {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    .question {
-      margin: 15px 0;
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-    .question span {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #218838;
-    }
-    #status {
-      margin-top: 15px;
-      text-align: center;
-      font-weight: bold;
-    }
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f6f8; }
+    h2 { color: #2c3e50; }
+    .question { margin-bottom: 15px; padding: 10px; background: #fff; border-radius: 8px; }
+    label { display: block; font-weight: bold; margin-bottom: 6px; }
+    select, input[type="text"] { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #ccc; }
+    button { margin-top: 20px; padding: 10px 15px; background: #2c3e50; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #1a242f; }
+    .message { margin-top: 15px; font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <h1>BSSA Discipline Form</h1>
-  <form id="bssaForm">
-    <label for="name">Student Name</label>
-    <input type="text" id="name" required />
+  <h2>GS GAKORO – Student Discipline Form</h2>
 
-    <label for="class">Class</label>
-    <input type="text" id="class" required />
-
-    <!-- 25 discipline questions -->
+  <form id="disciplineForm">
     <div class="question">
-      <span>1. Does the student raise hand before speaking?</span>
-      <label><input type="radio" name="q1" value="Always" required> Always</label>
-      <label><input type="radio" name="q1" value="Usually"> Usually</label>
-      <label><input type="radio" name="q1" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q1" value="Never"> Never</label>
+      <label for="studentName">Student Name</label>
+      <input type="text" name="studentName" required>
     </div>
 
     <div class="question">
-      <span>2. Does the student act up in line?</span>
-      <label><input type="radio" name="q2" value="Always" required> Always</label>
-      <label><input type="radio" name="q2" value="Usually"> Usually</label>
-      <label><input type="radio" name="q2" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q2" value="Never"> Never</label>
+      <label for="class">Class</label>
+      <input type="text" name="class" required>
     </div>
 
-    <div class="question">
-      <span>3. Does the student show respect to teachers?</span>
-      <label><input type="radio" name="q3" value="Always" required> Always</label>
-      <label><input type="radio" name="q3" value="Usually"> Usually</label>
-      <label><input type="radio" name="q3" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q3" value="Never"> Never</label>
-    </div>
-
-    <div class="question">
-      <span>4. Does the student show respect to fellow students?</span>
-      <label><input type="radio" name="q4" value="Always" required> Always</label>
-      <label><input type="radio" name="q4" value="Usually"> Usually</label>
-      <label><input type="radio" name="q4" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q4" value="Never"> Never</label>
-    </div>
-
-    <div class="question">
-      <span>5. Does the student keep time for classes?</span>
-      <label><input type="radio" name="q5" value="Always" required> Always</label>
-      <label><input type="radio" name="q5" value="Usually"> Usually</label>
-      <label><input type="radio" name="q5" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q5" value="Never"> Never</label>
-    </div>
-
-    <div class="question">
-      <span>6. Does the student complete homework on time?</span>
-      <label><input type="radio" name="q6" value="Always" required> Always</label>
-      <label><input type="radio" name="q6" value="Usually"> Usually</label>
-      <label><input type="radio" name="q6" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q6" value="Never"> Never</label>
-    </div>
-
-    <div class="question">
-      <span>7. Does the student keep uniform neat and clean?</span>
-      <label><input type="radio" name="q7" value="Always" required> Always</label>
-      <label><input type="radio" name="q7" value="Usually"> Usually</label>
-      <label><input type="radio" name="q7" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q7" value="Never"> Never</label>
-    </div>
-
-    <div class="question">
-      <span>8. Does the student maintain silence in library?</span>
-      <label><input type="radio" name="q8" value="Always" required> Always</label>
-      <label><input type="radio" name="q8" value="Usually"> Usually</label>
-      <label><input type="radio" name="q8" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q8" value="Never"> Never</label>
-    </div>
-
-    <div class="question">
-      <span>9. Does the student avoid fights or conflicts?</span>
-      <label><input type="radio" name="q9" value="Always" required> Always</label>
-      <label><input type="radio" name="q9" value="Usually"> Usually</label>
-      <label><input type="radio" name="q9" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q9" value="Never"> Never</label>
-    </div>
-
-    <div class="question">
-      <span>10. Does the student follow school rules?</span>
-      <label><input type="radio" name="q10" value="Always" required> Always</label>
-      <label><input type="radio" name="q10" value="Usually"> Usually</label>
-      <label><input type="radio" name="q10" value="Sometimes"> Sometimes</label>
-      <label><input type="radio" name="q10" value="Never"> Never</label>
-    </div>
-
-    <!-- Questions 11 to 25 follow the same pattern -->
-    <!-- For brevity, I'll stop here but in your final file we will continue until q25 -->
+    <!-- Discipline Questions -->
+    <div class="question"><label>Q1. Raise hand in class</label><select name="q1"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q2. Act up in line</label><select name="q2"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q3. Arrive to class on time</label><select name="q3"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q4. Do what I am told</label><select name="q4"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q5. Behave for a substitute</label><select name="q5"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q6. Talk in class</label><select name="q6"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q7. Write on desks</label><select name="q7"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q8. Write on chairs</label><select name="q8"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q9. Lean back in chairs</label><select name="q9"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q10. Chew gum in class</label><select name="q10"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q11. Throw objects in class</label><select name="q11"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q12. Touch other students</label><select name="q12"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q13. Take other’s things</label><select name="q13"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q14. Have all materials for class</label><select name="q14"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q15. Help teacher when asked</label><select name="q15"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q16. Act politely</label><select name="q16"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q17. Pay attention in class</label><select name="q17"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q18. Clean up desk area</label><select name="q18"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q19. Accept extra duties in class</label><select name="q19"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q20. Use restroom time properly</label><select name="q20"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q21. Turn in found objects</label><select name="q21"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q22. Obey school rules</label><select name="q22"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q23. Obey classroom rules</label><select name="q23"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q24. Copies work from others</label><select name="q24"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
+    <div class="question"><label>Q25. Use abusive language</label><select name="q25"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
 
     <button type="submit">Submit</button>
-    <div id="status"></div>
+    <div class="message" id="formMessage"></div>
   </form>
 
   <script>
-    const scriptURL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL"; // <-- replace with your deployed script URL
+    const scriptURL = "YOUR_GOOGLE_SCRIPT_URL_HERE"; // Replace with your Apps Script Web App URL
+    const form = document.getElementById("disciplineForm");
+    const message = document.getElementById("formMessage");
 
-    document.getElementById("bssaForm").addEventListener("submit", async function(e) {
+    form.addEventListener("submit", e => {
       e.preventDefault();
 
-      const formData = {
-        name: document.getElementById("name").value,
-        class: document.getElementById("class").value,
-      };
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => { data[key] = value });
 
-      // collect all 25 answers
-      for (let i = 1; i <= 25; i++) {
-        const answer = document.querySelector(`input[name="q${i}"]:checked`);
-        if (answer) {
-          formData[`q${i}`] = answer.value;
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(response => response.json())
+      .then(res => {
+        if(res.result === "Success") {
+          message.textContent = "✅ Thank you! Your response has been recorded.";
+          form.reset();
+        } else {
+          message.textContent = "❌ Error: " + res.message;
         }
-      }
-
-      try {
-        const res = await fetch(scriptURL, {
-          method: "POST",
-          mode: "cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData)
-        });
-
-        const data = await res.json();
-        document.getElementById("status").textContent = "✅ Submitted successfully!";
-        document.getElementById("bssaForm").reset();
-      } catch (err) {
-        document.getElementById("status").textContent = "❌ Error submitting. Try again.";
-        console.error(err);
-      }
+      })
+      .catch(error => {
+        message.textContent = "❌ Failed to submit. Please try again.";
+      });
     });
   </script>
 
