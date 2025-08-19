@@ -6,48 +6,116 @@
   <title>GS GAKORO — Discipline/Indiscipline Scoring Form</title>
   <style>
     :root {
-      --bg: #0f172a; /* slate-900 */
-      --card: #111827; /* gray-900 */
-      --muted: #94a3b8; /* slate-400 */
-      --text: #e5e7eb; /* gray-200 */
-      --accent: #22c55e; /* green-500 */
-      --accent-2: #3b82f6; /* blue-500 */
+      --bg: #0a1128;      /* Deep navy blue */
+      --card: #112240;    /* Dark blue-gray card */
+      --muted: #7d90b8;   /* Muted bluish-gray */
+      --text: #e0e8ff;    /* Light bluish text */
+      --accent: #3b82f6;  /* Blue accent */
+      --accent-2: #2563eb; /* Darker blue accent */
       --danger: #ef4444;
       --warning: #f59e0b;
     }
+
     * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:linear-gradient(180deg,#0b1024, #0f172a 40%, #0b1024); color:var(--text); }
+    body {
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background:linear-gradient(180deg, #071021, var(--bg) 40%, #071021);
+      color:var(--text);
+    }
     .wrap { max-width: 980px; margin: 24px auto; padding: 16px; }
-    .card { background: rgba(17,24,39,.7); backdrop-filter: blur(6px); border:1px solid rgba(148,163,184,.15); border-radius: 18px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,.35); }
-    h1 { margin:0 0 10px; font-size: clamp(22px, 2.6vw, 32px); letter-spacing:.2px; }
+    .card {
+      background: rgba(17,34,64,.75);
+      backdrop-filter: blur(6px);
+      border:1px solid rgba(125,144,184,.25);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.4);
+    }
+    h1 { margin:0 0 10px; font-size: clamp(22px, 2.6vw, 32px); letter-spacing:.3px; }
     .row { display:grid; gap:12px; grid-template-columns: 1fr; }
     @media (min-width: 720px) { .row{ grid-template-columns: 1fr 1fr 1fr; } }
     label { font-size: 14px; color: var(--muted); display:block; margin-bottom:6px; }
-    input[type="text"], select { width:100%; border-radius: 12px; border:1px solid rgba(148,163,184,.25); padding:12px 14px; background:#0b1222; color:var(--text); outline:none; }
+    input[type="text"], select {
+      width:100%;
+      border-radius: 12px;
+      border:1px solid rgba(125,144,184,.35);
+      padding:12px 14px;
+      background:#0d1a3a;
+      color:var(--text);
+      outline:none;
+    }
     .section { margin-top: 18px; }
-    .section h2 { font-size: clamp(16px, 2vw, 20px); margin: 0 0 8px; color:#cbd5e1; }
-    .question { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 12px; border:1px solid rgba(148,163,184,.18); border-radius: 14px; background: rgba(2,6,23,.55); }
-    .qtext { flex: 1 1 auto; font-size:14px; line-height:1.35; color:#e2e8f0; }
+    .section h2 {
+      font-size: clamp(16px, 2vw, 20px);
+      margin: 0 0 8px;
+      color:#cdd9f0;
+    }
+    .question {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 12px;
+      border:1px solid rgba(125,144,184,.25);
+      border-radius: 14px;
+      background: rgba(8,20,48,.65);
+    }
+    .qtext { flex: 1 1 auto; font-size:14px; line-height:1.35; color:#e6ecff; }
     .yn { display:flex; gap:10px; white-space:nowrap; }
-    .pill { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius: 999px; border:1px solid rgba(148,163,184,.25); cursor:pointer; user-select:none; }
-    .pill input { appearance:none; width:16px; height:16px; border-radius:50%; border:2px solid #64748b; display:inline-block; position:relative; }
-    .pill input:checked { border-color: var(--accent); box-shadow: inset 0 0 0 4px var(--accent); }
-    .pill.danger input:checked { border-color: var(--danger); box-shadow: inset 0 0 0 4px var(--danger); }
+    .pill {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(125,144,184,.35);
+      cursor:pointer;
+      user-select:none;
+    }
+    .pill input {
+      appearance:none;
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      border:2px solid #7d90b8;
+      display:inline-block;
+      position:relative;
+    }
+    .pill input:checked {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 4px var(--accent);
+    }
+    .pill.danger input:checked {
+      border-color: var(--danger);
+      box-shadow: inset 0 0 0 4px var(--danger);
+    }
 
-    .stats { display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top: 16px; }
+    .stats {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top: 16px;
+    }
     @media (min-width:720px){ .stats{ grid-template-columns: repeat(4, 1fr);} }
-    .kpi { background: #0b1222; border:1px solid rgba(148,163,184,.2); border-radius:16px; padding:12px; text-align:center; }
-    .kpi .label { font-size:12px; color:#a3a3a3; }
+    .kpi {
+      background: #0d1a3a;
+      border:1px solid rgba(125,144,184,.35);
+      border-radius:16px;
+      padding:12px;
+      text-align:center;
+    }
+    .kpi .label { font-size:12px; color:#a3b5dd; }
     .kpi .value { font-weight:700; font-size: 22px; margin-top:6px; }
 
     .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
     button { appearance:none; border:0; border-radius: 14px; padding:12px 14px; font-weight:600; cursor:pointer; }
     .primary { background: var(--accent-2); color:white; }
-    .ghost { background: transparent; color:#cbd5e1; border:1px solid rgba(148,163,184,.25); }
+    .ghost { background: transparent; color:#cbd5e1; border:1px solid rgba(125,144,184,.35); }
     .note { font-size:12px; color:#94a3b8; margin-top: 6px; }
     .footer { text-align:center; margin-top: 16px; font-size: 12px; color: #94a3b8; }
     .hidden { display:none !important; }
-    .divider { height:1px; background: rgba(148,163,184,.2); margin: 14px 0; }
+    .divider { height:1px; background: rgba(125,144,184,.3); margin: 14px 0; }
     .success { color: #34d399; }
     .error { color: var(--danger); }
   </style>
@@ -105,16 +173,9 @@
   </div>
 
   <script>
-    // ===================== CONFIG =====================
-    // 1) Replace with your Apps Script endpoint that RETURNS student names as JSON
-    // Expected response shape: { students: ["Alice Mukamana", "Eric Niyonsenga", ...] }
-    const NAMES_URL = "https://script.google.com/macros/s/AKfycbw6iiaWgtZBnepXGk0GuRME3jS3v-sdyZMDeZQ-_IAWDdXCx55-BtACsyFcBRhQS-MA/exec?action=names"; // <-- REPLACE
+    const NAMES_URL = "https://script.google.com/macros/s/AKfycbxG2Zg8QUM2eTCVItlljZOuGyUUKBEdwP5g6gCSH9kg7UJj4Cqo7Yv8Y2KtlOD-Pe8Z/exec?action=names";
+    const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbwUNNF-nAZ7EHGbsb_ti3uTI8Lm2yTs0LKNrHX5yeHHXjC3X2RlhERZRiaZuvxdMtXP/exec";
 
-    // 2) Replace with your Apps Script endpoint that ACCEPTS POSTed results
-    const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbxF73eNnlR9r1Aahj16paRnH2AtlYfodFj-VxHuETjKkEBOv7sLXGb7ufVSpnLNiUeL/exec"; // <-- REPLACE
-
-    // =================== QUESTIONS ====================
-    // Yes = 2, No = 0 (applies to both groups as requested)
     const POSITIVE = [
       { key: 'raise_hand', label: "Arasubiza mu masomo (Raise hand in class)" },
       { key: 'on_time', label: "Agerera ku gihe mu ishuri (Arrive to class on time)" },
@@ -142,18 +203,10 @@
     ];
 
     const YES = 2, NO = 0;
-
-    // ================ UTILITIES/STATE =================
     const $ = (sel) => document.querySelector(sel);
     const byId = (id) => document.getElementById(id);
 
-    const state = {
-      answers: {}, // key -> 0/2
-      discipline: 0,
-      indiscipline: 0,
-      total: 0,
-      ratio: 0,
-    };
+    const state = { answers: {}, discipline: 0, indiscipline: 0, total: 0, ratio: 0 };
 
     function renderQuestions() {
       const positiveList = byId('positiveList');
@@ -174,13 +227,15 @@
         const yesLbl = document.createElement('label');
         yesLbl.className = 'pill';
         const yes = document.createElement('input');
-        yes.type = 'radio'; yes.name = item.key; yes.value = YES; yes.addEventListener('change', ()=> setAnswer(item.key, YES, group));
+        yes.type = 'radio'; yes.name = item.key; yes.value = YES;
+        yes.addEventListener('change', ()=> setAnswer(item.key, YES, group));
         yesLbl.appendChild(yes); yesLbl.appendChild(document.createTextNode('Yes (2)'));
 
         const noLbl = document.createElement('label');
         noLbl.className = 'pill danger';
         const no = document.createElement('input');
-        no.type = 'radio'; no.name = item.key; no.value = NO; no.addEventListener('change', ()=> setAnswer(item.key, NO, group));
+        no.type = 'radio'; no.name = item.key; no.value = NO;
+        no.addEventListener('change', ()=> setAnswer(item.key, NO, group));
         noLbl.appendChild(no); noLbl.appendChild(document.createTextNode('No (0)'));
 
         yn.appendChild(yesLbl); yn.appendChild(noLbl);
@@ -277,7 +332,6 @@
       }
     }
 
-    // ================ EVENTS/INIT =====================
     byId('clearBtn').addEventListener('click', clearForm);
     byId('submitBtn').addEventListener('click', submitResults);
     byId('student').addEventListener('change', () => { byId('questions').classList.toggle('hidden', !byId('student').value); });
@@ -288,4 +342,3 @@
   </script>
 </body>
 </html>
-
