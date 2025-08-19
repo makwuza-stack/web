@@ -1,97 +1,290 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="rw">
 <head>
-  <meta charset="UTF-8">
-  <title>Discipline Form - GS GAKORO</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GS GAKORO — Discipline/Indiscipline Scoring Form</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f6f8; }
-    h2 { color: #2c3e50; }
-    .question { margin-bottom: 15px; padding: 10px; background: #fff; border-radius: 8px; }
-    label { display: block; font-weight: bold; margin-bottom: 6px; }
-    select, input[type="text"] { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #ccc; }
-    button { margin-top: 20px; padding: 10px 15px; background: #2c3e50; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
-    button:hover { background: #1a242f; }
-    .message { margin-top: 15px; font-weight: bold; }
+    :root {
+      --bg: #0f172a; /* slate-900 */
+      --card: #111827; /* gray-900 */
+      --muted: #94a3b8; /* slate-400 */
+      --text: #e5e7eb; /* gray-200 */
+      --accent: #22c55e; /* green-500 */
+      --accent-2: #3b82f6; /* blue-500 */
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:linear-gradient(180deg,#0b1024, #0f172a 40%, #0b1024); color:var(--text); }
+    .wrap { max-width: 980px; margin: 24px auto; padding: 16px; }
+    .card { background: rgba(17,24,39,.7); backdrop-filter: blur(6px); border:1px solid rgba(148,163,184,.15); border-radius: 18px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,.35); }
+    h1 { margin:0 0 10px; font-size: clamp(22px, 2.6vw, 32px); letter-spacing:.2px; }
+    .row { display:grid; gap:12px; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .row{ grid-template-columns: 1fr 1fr 1fr; } }
+    label { font-size: 14px; color: var(--muted); display:block; margin-bottom:6px; }
+    input[type="text"], select { width:100%; border-radius: 12px; border:1px solid rgba(148,163,184,.25); padding:12px 14px; background:#0b1222; color:var(--text); outline:none; }
+    .section { margin-top: 18px; }
+    .section h2 { font-size: clamp(16px, 2vw, 20px); margin: 0 0 8px; color:#cbd5e1; }
+    .question { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 12px; border:1px solid rgba(148,163,184,.18); border-radius: 14px; background: rgba(2,6,23,.55); }
+    .qtext { flex: 1 1 auto; font-size:14px; line-height:1.35; color:#e2e8f0; }
+    .yn { display:flex; gap:10px; white-space:nowrap; }
+    .pill { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius: 999px; border:1px solid rgba(148,163,184,.25); cursor:pointer; user-select:none; }
+    .pill input { appearance:none; width:16px; height:16px; border-radius:50%; border:2px solid #64748b; display:inline-block; position:relative; }
+    .pill input:checked { border-color: var(--accent); box-shadow: inset 0 0 0 4px var(--accent); }
+    .pill.danger input:checked { border-color: var(--danger); box-shadow: inset 0 0 0 4px var(--danger); }
+
+    .stats { display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top: 16px; }
+    @media (min-width:720px){ .stats{ grid-template-columns: repeat(4, 1fr);} }
+    .kpi { background: #0b1222; border:1px solid rgba(148,163,184,.2); border-radius:16px; padding:12px; text-align:center; }
+    .kpi .label { font-size:12px; color:#a3a3a3; }
+    .kpi .value { font-weight:700; font-size: 22px; margin-top:6px; }
+
+    .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+    button { appearance:none; border:0; border-radius: 14px; padding:12px 14px; font-weight:600; cursor:pointer; }
+    .primary { background: var(--accent-2); color:white; }
+    .ghost { background: transparent; color:#cbd5e1; border:1px solid rgba(148,163,184,.25); }
+    .note { font-size:12px; color:#94a3b8; margin-top: 6px; }
+    .footer { text-align:center; margin-top: 16px; font-size: 12px; color: #94a3b8; }
+    .hidden { display:none !important; }
+    .divider { height:1px; background: rgba(148,163,184,.2); margin: 14px 0; }
+    .success { color: #34d399; }
+    .error { color: var(--danger); }
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card">
+      <h1>GS GAKORO — Discipline/Indiscipline Scoring</h1>
+      <p class="note">Yes = 2, No = 0. First pick a student; questions will appear. You can submit results to your Google Sheet.</p>
 
-  <h2>GS GAKORO – Student Discipline Form</h2>
+      <div class="row">
+        <div>
+          <label>Teacher</label>
+          <input id="teacher" type="text" placeholder="e.g., Mr. John" />
+        </div>
+        <div>
+          <label>Class</label>
+          <input id="clazz" type="text" placeholder="e.g., S001" />
+        </div>
+        <div>
+          <label>Student Name</label>
+          <select id="student" disabled>
+            <option value="">Loading student names…</option>
+          </select>
+          <div id="studentLoadMsg" class="note"></div>
+        </div>
+      </div>
 
-  <form id="disciplineForm">
-    <div class="question">
-      <label for="studentName">Student Name</label>
-      <input type="text" name="studentName" required>
+      <div id="questions" class="hidden">
+        <div class="section">
+          <h2>Positive Behaviours</h2>
+          <div id="positiveList" class="stack" style="display:grid; gap:10px;"></div>
+        </div>
+        <div class="section">
+          <h2>Negative Behaviours</h2>
+          <div id="negativeList" class="stack" style="display:grid; gap:10px;"></div>
+        </div>
+
+        <div class="stats">
+          <div class="kpi"><div class="label">Discipline (sum of positives)</div><div id="kpiDis" class="value">0</div></div>
+          <div class="kpi"><div class="label">Indiscipline (sum of negatives)</div><div id="kpiIndis" class="value">0</div></div>
+          <div class="kpi"><div class="label">Ratio (Discipline / Total)</div><div id="kpiRatio" class="value">0%</div></div>
+          <div class="kpi"><div class="label">Total Score</div><div id="kpiTotal" class="value">0</div></div>
+        </div>
+
+        <div class="actions">
+          <button id="clearBtn" class="ghost" type="button">Clear</button>
+          <button id="submitBtn" class="primary" type="button">Submit to Sheet</button>
+        </div>
+        <div id="submitMsg" class="note"></div>
+      </div>
+
+      <div class="footer">© <span id="year"></span> GS GAKORO · Built for quick classroom check-ins</div>
     </div>
-
-    <div class="question">
-      <label for="class">Class</label>
-      <input type="text" name="class" required>
-    </div>
-
-    <!-- Discipline Questions -->
-    <div class="question"><label>Q1. Raise hand in class</label><select name="q1"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q2. Act up in line</label><select name="q2"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q3. Arrive to class on time</label><select name="q3"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q4. Do what I am told</label><select name="q4"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q5. Behave for a substitute</label><select name="q5"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q6. Talk in class</label><select name="q6"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q7. Write on desks</label><select name="q7"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q8. Write on chairs</label><select name="q8"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q9. Lean back in chairs</label><select name="q9"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q10. Chew gum in class</label><select name="q10"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q11. Throw objects in class</label><select name="q11"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q12. Touch other students</label><select name="q12"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q13. Take other’s things</label><select name="q13"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q14. Have all materials for class</label><select name="q14"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q15. Help teacher when asked</label><select name="q15"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q16. Act politely</label><select name="q16"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q17. Pay attention in class</label><select name="q17"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q18. Clean up desk area</label><select name="q18"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q19. Accept extra duties in class</label><select name="q19"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q20. Use restroom time properly</label><select name="q20"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q21. Turn in found objects</label><select name="q21"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q22. Obey school rules</label><select name="q22"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q23. Obey classroom rules</label><select name="q23"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q24. Copies work from others</label><select name="q24"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-    <div class="question"><label>Q25. Use abusive language</label><select name="q25"><option>Always</option><option>Usually</option><option>Sometimes</option><option>Hardly Ever</option><option>Never</option></select></div>
-
-    <button type="submit">Submit</button>
-    <div class="message" id="formMessage"></div>
-  </form>
+  </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbw4ExZ5emwI6P9Tm8CDlAuMIyEZ7_SFBwS5UQPVQJVFFH0c1Jhwn14Lx93MLsPCQ4nU/exec"; // Replace with your Apps Script Web App URL
-    const form = document.getElementById("disciplineForm");
-    const message = document.getElementById("formMessage");
+    // ===================== CONFIG =====================
+    // 1) Replace with your Apps Script endpoint that RETURNS student names as JSON
+    // Expected response shape: { students: ["Alice Mukamana", "Eric Niyonsenga", ...] }
+    const NAMES_URL = "https://script.google.com/macros/s/AKfycbw6iiaWgtZBnepXGk0GuRME3jS3v-sdyZMDeZQ-_IAWDdXCx55-BtACsyFcBRhQS-MA/exec?action=names"; // <-- REPLACE
 
-    form.addEventListener("submit", e => {
-      e.preventDefault();
+    // 2) Replace with your Apps Script endpoint that ACCEPTS POSTed results
+    const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbw6iiaWgtZBnepXGk0GuRME3jS3v-sdyZMDeZQ-_IAWDdXCx55-BtACsyFcBRhQS-MA/exec"; // <-- REPLACE
 
-      const formData = new FormData(form);
-      const data = {};
-      formData.forEach((value, key) => { data[key] = value });
+    // =================== QUESTIONS ====================
+    // Yes = 2, No = 0 (applies to both groups as requested)
+    const POSITIVE = [
+      { key: 'raise_hand', label: "Arasubiza mu masomo (Raise hand in class)" },
+      { key: 'on_time', label: "Agerera ku gihe mu ishuri (Arrive to class on time)" },
+      { key: 'do_as_told', label: "Akora ibyo mbwirwa (Do what I am told)" },
+      { key: 'behave_sub', label: "Yitwara neza igihe umwarimu adahari (Behave for a substitute)" },
+      { key: 'materials', label: "Afite ibikoresho byose by’ishuri (Have all materials for class)" },
+      { key: 'help_teacher', label: "Afasha umwarimu igihe abisabwe (Help teacher when asked)" },
+      { key: 'polite', label: "Yitwara neza (Act politely)" },
+      { key: 'pay_attention', label: "Arakurikira mu ishuri (Pay attention in class)" },
+      { key: 'clean_desk', label: "Akora cg Agira isuku (Clean up desk area)" },
+      { key: 'extra_duties', label: "Afata inshingano zinyongera mu ishuri (Accept extra duties in class like a group leader)" },
+    ];
 
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(response => response.json())
-      .then(res => {
-        if(res.result === "Success") {
-          message.textContent = "✅ Thank you! Your response has been recorded.";
-          form.reset();
-        } else {
-          message.textContent = "❌ Error: " + res.message;
-        }
-      })
-      .catch(error => {
-        message.textContent = "❌ Failed to submit. Please try again.";
+    const NEGATIVE = [
+      { key: 'act_up_line', label: "Akora akajagari ku murongo (Act up in line)" },
+      { key: 'talk_in_class', label: "Asakuza mu ishuri (Talk in class)" },
+      { key: 'write_on_desks', label: "Yandika ku meza y'banyeshuri (Write on desks)" },
+      { key: 'disorderly', label: "Arajagaraye mu ishuri (Disorderly)" },
+      { key: 'lean_back', label: "Yicara mu buryo butari bwo (Lean back in chairs)" },
+      { key: 'chew_gum', label: "Kuryagagura mu ishuri (Chew gum in class)" },
+      { key: 'throw_objects', label: "Atera ibintu mu ishuri (Throw objects in class)" },
+      { key: 'touch_others', label: "Arenderanya (Touch other students)" },
+      { key: 'take_things', label: "Afata ibyo abandi bafite (Take other’s things)" },
+      { key: 'abusive_language', label: "Akoresha amagambo akomeretsa cyangwa ashinyagura (Use abusive language)" },
+    ];
+
+    const YES = 2, NO = 0;
+
+    // ================ UTILITIES/STATE =================
+    const $ = (sel) => document.querySelector(sel);
+    const byId = (id) => document.getElementById(id);
+
+    const state = {
+      answers: {}, // key -> 0/2
+      discipline: 0,
+      indiscipline: 0,
+      total: 0,
+      ratio: 0,
+    };
+
+    function renderQuestions() {
+      const positiveList = byId('positiveList');
+      const negativeList = byId('negativeList');
+      positiveList.innerHTML = '';
+      negativeList.innerHTML = '';
+
+      function mkQuestion(item, group) {
+        const row = document.createElement('div');
+        row.className = 'question';
+        const text = document.createElement('div');
+        text.className = 'qtext';
+        text.textContent = item.label;
+
+        const yn = document.createElement('div');
+        yn.className = 'yn';
+
+        const yesLbl = document.createElement('label');
+        yesLbl.className = 'pill';
+        const yes = document.createElement('input');
+        yes.type = 'radio'; yes.name = item.key; yes.value = YES; yes.addEventListener('change', ()=> setAnswer(item.key, YES, group));
+        yesLbl.appendChild(yes); yesLbl.appendChild(document.createTextNode('Yes (2)'));
+
+        const noLbl = document.createElement('label');
+        noLbl.className = 'pill danger';
+        const no = document.createElement('input');
+        no.type = 'radio'; no.name = item.key; no.value = NO; no.addEventListener('change', ()=> setAnswer(item.key, NO, group));
+        noLbl.appendChild(no); noLbl.appendChild(document.createTextNode('No (0)'));
+
+        yn.appendChild(yesLbl); yn.appendChild(noLbl);
+        row.appendChild(text); row.appendChild(yn);
+        return row;
+      }
+
+      POSITIVE.forEach(item => positiveList.appendChild(mkQuestion(item, 'pos')));
+      NEGATIVE.forEach(item => negativeList.appendChild(mkQuestion(item, 'neg')));
+    }
+
+    function setAnswer(key, val, group) {
+      state.answers[key] = { value: Number(val), group };
+      recalc();
+    }
+
+    function recalc() {
+      let dis = 0, indis = 0;
+      Object.values(state.answers).forEach(({value, group}) => {
+        if (group === 'pos') dis += value; else if (group === 'neg') indis += value;
       });
-    });
-  </script>
+      const total = dis + indis;
+      const ratio = total > 0 ? Math.round((dis / total) * 100) : 0;
+      state.discipline = dis; state.indiscipline = indis; state.total = total; state.ratio = ratio;
+      byId('kpiDis').textContent = dis;
+      byId('kpiIndis').textContent = indis;
+      byId('kpiTotal').textContent = total;
+      byId('kpiRatio').textContent = ratio + '%';
+    }
 
+    function clearForm() {
+      state.answers = {}; state.discipline = state.indiscipline = state.total = state.ratio = 0;
+      document.querySelectorAll('input[type=radio]').forEach(el => { el.checked = false; });
+      recalc();
+    }
+
+    async function loadStudentNames() {
+      const sel = byId('student');
+      const msg = byId('studentLoadMsg');
+      try {
+        const res = await fetch(NAMES_URL, { method: 'GET' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        const names = Array.isArray(data.students) ? data.students : Array.isArray(data) ? data : [];
+        sel.innerHTML = '<option value="">— Choose a student —</option>' + names.map(n => `<option>${String(n)}</option>`).join('');
+        sel.disabled = false;
+        msg.textContent = `Loaded ${names.length} names`;
+      } catch (e) {
+        sel.innerHTML = '<option value="">Failed to load names. Check NAMES_URL.</option>';
+        msg.textContent = e.message;
+      }
+    }
+
+    function ensureReady() {
+      const teacher = byId('teacher').value.trim();
+      const clazz = byId('clazz').value.trim();
+      const student = byId('student').value.trim();
+      if (!teacher || !clazz || !student) {
+        alert('Please fill Teacher, Class, and choose a Student before submitting.');
+        return null;
+      }
+      return { teacher, clazz, student };
+    }
+
+    async function submitResults() {
+      const who = ensureReady();
+      if (!who) return;
+      const payload = {
+        timestamp: new Date().toISOString(),
+        teacher: who.teacher,
+        class: who.clazz,
+        studentName: who.student,
+        answers: Object.fromEntries(Object.entries(state.answers).map(([k, v]) => [k, v.value])),
+        discipline: state.discipline,
+        indiscipline: state.indiscipline,
+        ratio: state.ratio,
+        score: state.total
+      };
+      const msg = byId('submitMsg');
+      msg.textContent = 'Submitting…'; msg.className = 'note';
+      try {
+        const res = await fetch(SUBMIT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json().catch(()=>({}));
+        msg.textContent = data.message || 'Saved!';
+        msg.className = 'note success';
+      } catch (e) {
+        msg.textContent = 'Submit failed: ' + e.message + ' (check SUBMIT_URL and permissions)';
+        msg.className = 'note error';
+      }
+    }
+
+    // ================ EVENTS/INIT =====================
+    byId('clearBtn').addEventListener('click', clearForm);
+    byId('submitBtn').addEventListener('click', submitResults);
+    byId('student').addEventListener('change', () => { byId('questions').classList.toggle('hidden', !byId('student').value); });
+
+    renderQuestions();
+    loadStudentNames();
+    byId('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
-
