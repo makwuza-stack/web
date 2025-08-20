@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Classroom Behavior Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; background: #0a1a3f; color: #fff; margin: 0; padding: 5px; }
+  h1 { color: #ffcc00; text-align: center; font-size: 1.3rem; margin-bottom: 10px; }
+  .container { max-width: 500px; margin: auto; background: #142850; padding: 10px; border-radius: 12px; }
+  label { display: block; margin-top: 8px; font-size: 0.9rem; }
+  select, input, textarea, button { padding: 8px; margin-top: 6px; border-radius: 8px; border: none; width: 100%; font-size: 0.95rem; box-sizing: border-box; }
+  select, input, textarea { background: #fff; color: #000; }
+  button { background: #ffcc00; font-weight: bold; cursor: pointer; margin-top: 8px; }
+  .question { margin: 6px 0; padding: 6px; background: #1e3d77; border-radius: 8px; font-size: 0.9rem; }
+  .question span { display: inline-block; width: 100%; margin-bottom: 4px; }
+  .progress-container { background: #ccc; border-radius: 8px; overflow: hidden; margin: 10px 0; position: relative; }
+  .progress-bar { height: 22px; background: #ffcc00; width: 0%; text-align: center; color: #000; font-weight: bold; font-size: 0.8rem; line-height: 22px; transition: width 0.3s ease; }
+  .top-buttons { display: flex; justify-content: space-between; margin-bottom: 10px; gap: 5px; }
+  @media (max-width: 500px) { h1 { font-size: 1.1rem; } .question { font-size: 0.85rem; } button { font-size: 0.9rem; padding: 6px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="top-buttons">
+    <button id="logoutBtn">Logout</button>
+    <button id="resetBtn">Reset</button>
+  </div>
+
+  <h1>Classroom Behavior Dashboard</h1>
+
+  <label for="teacher">Teacher</label>
+  <input type="text" id="teacher" placeholder="Enter teacher's name" required>
+
+  <label for="class">Class</label>
+  <input type="text" id="class" placeholder="Enter class (e.g., S1A)" required>
+
+  <label for="student">Select Student</label>
+  <select id="student"></select>
+
+  <!-- Chart -->
+  <canvas id="studentChart" height="150"></canvas>
+
+  <div class="progress-container">
+    <div id="progressBar" class="progress-bar">0/0 - 0%</div>
+  </div>
+
+  <form id="behaviorForm" style="display:none;">
+    <div id="questions"></div>
+
+    <label for="notes">Notes (Optional)</label>
+    <textarea id="notes" rows="3" placeholder="Enter additional notes..."></textarea>
+
+    <button type="submit">Submit</button>
+    <button type="button" id="clearBtn">Clear</button>
+  </form>
+</div>
+
+<script>
+const QUESTIONS = [
+  "Arasubiza mu masomo (Raise hand in class)",
+  "Agerera ku gihe mu ishuri (Arrive to class on time)",
+  "Akora ibyo mbwirwa (Do what I am told)",
+  "Yitwara neza igihe umwarimu adahari (Behave for a substitute)",
+  "Afite ibikoresho byose by’ishuri (Have all materials for class)",
+  "Afasha umwarimu igihe abisabwe (Help teacher when asked)",
+  "Yitwara neza (Act politely)",
+  "Arakurikira mu ishuri (Pay attention in class)",
+  "Akora cg Agira isuku (Clean up desk area)",
+  "Afata inshingano zinyongera mu ishuri (Accept extra duties in class like a group leader)",
+  "Akora akajagari ku murongo (Act up in line)",
+  "Asakuza mu ishuri (Talk in class)",
+  "Yandika ku meza y'abanyeshuri (Write on desks)",
+  "Arajagaraye mu ishuri (Disorderly)",
+  "Yicara mu buryo butari bwo (Lean back in chairs)",
+  "Kuryagagura mu ishuri (Chew gum in class)",
+  "Atera ibintu mu ishuri (Throw objects in class)",
+  "Arenderanya (Touch other students)",
+  "Afata ibyo abandi bafite (Take other’s things)",
+  "Akoresha amagambo akomeretsa cyangwa ashinyagura (Use abusive language)"
+];
+
+const APP_URL = "https://script.google.com/macros/s/AKfycbxeHo0NCEpRsknqPdGm3N4MRHHJX3B2k8ai932-Z-YJx7JZ0EzEzWIRi4ZU68EaLuQ2ug/exec"; 
+let studentsList = [];
+let totalStudents = 0;
+let completed = 0;
+let submittedStudents = JSON.parse(localStorage.getItem('submittedStudents') || "[]");
+
+// --- CHECK LOGIN ---
+if(!localStorage.getItem("loggedInUser")){
+  alert("You must login first!");
+  window.location.href = "login.html";
+}
+
+// --- CHART SETUP ---
+const ctx = document.getElementById('studentChart').getContext('2d');
+let studentChart = new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Submitted', 'Remaining'],
+    datasets: [{
+      data: [0,0],
+      backgroundColor: ['#ffcc00', '#1e3d77']
+    }]
+  },
+  options: {
+    responsive:true,
+    plugins:{ legend:{ position:'bottom', labels:{ color:'#fff' } } }
+  }
+});
+
+// --- FETCH STUDENTS BY CLASS ---
+function fetchStudents(){
+  const className = document.getElementById("class").value.trim();
+  if(!className){
+    alert("Please enter a class first (e.g., S1A)");
+    return;
+  }
+
+  fetch(`${APP_URL}?class=${encodeURIComponent(className)}`)
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.error){
+        alert("❌ " + data.error);
+        return;
+      }
+      studentsList = data.students.sort().filter(s=>!submittedStudents.includes(s));
+      totalStudents = data.students.length;
+      renderStudentOptions();
+      updateProgress();
+      document.getElementById("behaviorForm").style.display = "none";
+    })
+    .catch(err=>alert("❌ Error fetching students: "+err));
+}
+
+function renderStudentOptions(){
+  const studentSelect = document.getElementById("student");
+  studentSelect.innerHTML = `<option value="">-- Select --</option>`;
+  studentsList.forEach(name=>{
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    studentSelect.appendChild(option);
+  });
+}
+
+// --- TRIGGER FETCH WHEN CLASS CHANGES ---
+document.getElementById("class").addEventListener("change", ()=>{
+  submittedStudents = JSON.parse(localStorage.getItem('submittedStudents') || "[]");
+  completed = submittedStudents.length;
+  fetchStudents();
+});
+
+// --- FORM LOGIC ---
+document.getElementById("student").addEventListener("change", function(){
+  const qContainer = document.getElementById("questions");
+  qContainer.innerHTML = "";
+  if(this.value){
+    document.getElementById("behaviorForm").style.display = "block";
+    QUESTIONS.forEach((q, idx)=>{
+      const div = document.createElement("div");
+      div.className="question";
+      div.innerHTML=`<span>${q}</span>
+        <label><input type="radio" name="q${idx}" value="2" required> Yes</label>
+        <label><input type="radio" name="q${idx}" value="0"> No</label>`;
+      qContainer.appendChild(div);
+    });
+  }else{
+    document.getElementById("behaviorForm").style.display="none";
+  }
+  resetIdleTimer();
+});
+
+document.getElementById("clearBtn").addEventListener("click", ()=>{
+  document.getElementById("behaviorForm").reset();
+  resetIdleTimer();
+});
+
+document.getElementById("behaviorForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const student = document.getElementById("student").value;
+  if(submittedStudents.includes(student)){
+    alert("This student has already been submitted!");
+    return;
+  }
+  const teacher = document.getElementById("teacher").value.trim();
+  const className = document.getElementById("class").value.trim();
+  const notes = document.getElementById("notes").value.trim();
+  if(!teacher || !className){
+    alert("Teacher and Class fields are required.");
+    return;
+  }
+  const answers = {};
+  QUESTIONS.forEach((q, idx)=>{
+    const val = document.querySelector(`input[name="q${idx}"]:checked`)?.value || "";
+    answers[q]=val;
+  });
+  const payload = {"Student Name":student,"Teacher":teacher,"Class":className,"Notes":notes,...answers};
+
+  fetch(APP_URL,{method:"POST",body:JSON.stringify(payload)})
+    .then(res=>res.json())
+    .then(data=>{
+      alert("✅ "+data.message);
+      submittedStudents.push(student);
+      localStorage.setItem('submittedStudents', JSON.stringify(submittedStudents));
+      studentsList = studentsList.filter(s=>s!==student);
+      completed = submittedStudents.length;
+      updateProgress();
+      renderStudentOptions();
+      document.getElementById("behaviorForm").style.display="none";
+    })
+    .catch(err=>alert("❌ Error: "+err));
+});
+
+function updateProgress(){
+  const percent = totalStudents ? Math.round((completed/totalStudents)*100):0;
+  const bar = document.getElementById("progressBar");
+  bar.style.width=percent+"%";
+  bar.textContent=`${completed}/${totalStudents} - ${percent}%`;
+
+  // Update chart
+  studentChart.data.datasets[0].data = [completed, totalStudents-completed];
+  studentChart.update();
+}
+
+// --- AUTO LOGOUT & IDLE TIMER ---
+function resetIdleTimer(){ localStorage.setItem("lastActivity", Date.now()); }
+setInterval(()=>{
+  const last = parseInt(localStorage.getItem("lastActivity") || 0);
+  if((Date.now() - last)/60000 >=5){
+    alert("Session expired due to inactivity. Redirecting to login page.");
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("lastActivity");
+    window.location.href="login.html";
+  }
+},60000);
+['mousemove','keypress','click','touchstart'].forEach(evt=>document.addEventListener(evt, resetIdleTimer,false));
+
+// LOGOUT BUTTON
+document.getElementById("logoutBtn").addEventListener("click",()=>{
+  localStorage.removeItem("loggedInUser");
+  localStorage.removeItem("lastActivity");
+  window.location.href="login.html";
+});
+
+// RESET BUTTON
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  if(confirm("Are you sure you want to reset all progress?")){
+    localStorage.removeItem('submittedStudents');
+    submittedStudents = [];
+    completed = 0;
+    fetchStudents();
+  }
+  resetIdleTimer();
+});
+</script>
+</body>
+</html>

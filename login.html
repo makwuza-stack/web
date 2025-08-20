@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Teacher Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    background: #0a1a3f; 
+    color: #fff; 
+    margin: 0; 
+    padding: 0; 
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+  }
+  .login-container { 
+    background: #142850; 
+    padding: 20px; 
+    border-radius: 12px; 
+    width: 100%; 
+    max-width: 400px; 
+    box-sizing: border-box; 
+    margin-bottom: 60px; /* space for footer */
+  }
+  h1 { text-align: center; color: #ffcc00; margin-bottom: 20px; }
+  label { display: block; margin-top: 10px; font-size: 0.9rem; }
+  input, button { 
+    padding: 10px; 
+    margin-top: 6px; 
+    border-radius: 8px; 
+    border: none; 
+    width: 100%; 
+    font-size: 1rem; 
+    box-sizing: border-box; 
+  }
+  input { background: #fff; color: #000; }
+  button { background: #ffcc00; font-weight: bold; cursor: pointer; margin-top: 10px; }
+  footer {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    background: #0a1a3f;
+    color: #ccc;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+  @media (max-width: 400px){ h1 { font-size: 1.2rem; } }
+</style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Teacher Login</h1>
+    <form id="loginForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter password" required>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <!-- ✅ Footer -->
+  <footer>
+    &copy; <span id="year"></span> Gakoro. All Rights Reserved. <br>
+    Developed by <strong>MCelestin</strong>
+  </footer>
+
+<script>
+// Dummy credentials (replace with secure server-side verification in production)
+const validUsers = [
+  {username: "teacher1", password: "Gakoro123"},
+  {username: "teacher2", password: "Gakoro123"}
+];
+
+// Handle login
+document.getElementById("loginForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  const user = validUsers.find(u => u.username === username && u.password === password);
+  if(user){
+    localStorage.setItem("loggedInUser", username);
+    localStorage.setItem("lastActivity", Date.now());
+    window.location.href = "bssa.html"; // your dashboard page
+  }else{
+    alert("❌ Invalid username or password");
+  }
+});
+
+// AUTO LOGOUT on inactivity
+function resetIdleTimer(){ localStorage.setItem("lastActivity", Date.now()); }
+setInterval(()=>{
+  const last = parseInt(localStorage.getItem("lastActivity") || 0);
+  const diffMinutes = (Date.now() - last)/60000;
+  if(diffMinutes >= 5){
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("lastActivity");
+    alert("Session expired due to inactivity. Redirecting to login page.");
+    window.location.href = "login.html";
+  }
+},60000);
+
+['mousemove','keypress','click','touchstart'].forEach(evt=>document.addEventListener(evt, resetIdleTimer,false));
+
+// Auto year update
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
