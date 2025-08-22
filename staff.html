@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GS GAKORO | Staff & Teachers</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background: #001f3f;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 { margin: 0; font-size: 28px; }
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #004080;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 15px 20px;
+      display: block;
+      font-weight: 600;
+    }
+    nav a:hover { background: #0059b3; }
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 { color: #001f3f; margin-bottom: 20px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      text-align: center;
+    }
+    .grid img {
+      width: 150px;
+      height: 200px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 8px;
+    }
+    .grid p { margin: 0; font-weight: bold; color: #004080; }
+
+    /* Mailbox */
+    .mailbox {
+      margin-top: 50px;
+      padding: 20px;
+      background: #f9f9ff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    .mailbox input, .mailbox textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #bbb;
+      font-size: 14px;
+    }
+    .mailbox button {
+      background: #004080;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .mailbox button:hover { background: #0059b3; }
+    .success { color: green; margin-top: 10px; }
+    .error { color: red; margin-top: 10px; }
+    footer {
+      background: #001f3f;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GS GAKORO Staff & Teachers</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="videos.html">Media TV</a>
+    <a href="eduguide.html">EduGuide</a>
+    <a href="news.html">News</a>
+  </nav>
+
+  <main>
+    <h2>Staff Members</h2>
+    <div class="grid">
+      <div><img src="p4.jpg" alt="HeadTeacher"><p>HeadTeacher</p></div>
+      <div><img src="p3.jpg" alt="DoS"><p>DoS</p></div>
+      <div><img src="p2.jpg" alt="DoD"><p>DoD</p></div>
+      <div><img src="p1.jpg" alt="Bursar"><p>Bursar</p></div>
+    </div>
+
+    <h2 style="margin-top:40px;">Teachers</h2>
+    <div class="grid">
+      <div><img src="t.jpg"><p>Teacher 1</p></div>
+      <div><img src="s.jpg"><p>Teacher 2</p></div>
+      <div><img src="r.jpg"><p>Teacher 3</p></div>
+      <div><img src="u.jpg"><p>Teacher 4</p></div>
+      <div><img src="o.jpg"><p>Teacher 5</p></div>
+      <div><img src="n.jpg"><p>Teacher 6</p></div>
+      <div><img src="m.jpg"><p>Teacher 7</p></div>
+      <div><img src="l.jpg"><p>Teacher 8</p></div>
+      <div><img src="k.jpg"><p>Teacher 9</p></div>
+      <div><img src="j.jpg"><p>Teacher 10</p></div>
+      <div><img src="i.jpg"><p>Teacher 11</p></div>
+      <div><img src="h.jpg"><p>Teacher 12</p></div>
+      <div><img src="g.jpg"><p>Teacher 13</p></div>
+      <div><img src="f.jpg"><p>Teacher 14</p></div>
+      <div><img src="e.jpg"><p>Teacher 15</p></div>
+      <div><img src="d.jpg"><p>Teacher 16</p></div>
+      <div><img src="c.jpg"><p>Teacher 17</p></div>
+      <div><img src="b.jpg"><p>Teacher 18</p></div>
+      <div><img src="a.jpg"><p>Teacher 19</p></div>
+    </div>
+
+    <div class="mailbox">
+      <h2>📬 Mailbox</h2>
+      <form id="mailForm">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Your Email" required>
+        <textarea id="message" placeholder="Write your message here..." rows="5" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+      <div id="response"></div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 GS GAKORO | Designed by DOD Makuza Celestin
+  </footer>
+
+  <script>
+    const form = document.getElementById("mailForm");
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbzTWbZhiU1sY09f5AVa69MF0ketVHID25iWIVoHt0pZFjV6YKjQrMUcERvr6HTsfSl7/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(response => {
+        document.getElementById("response").innerHTML =
+          "<p class='success'>Thank you! We love it 💙</p>";
+        form.reset();
+      })
+      .catch(err => {
+        document.getElementById("response").innerHTML =
+          "<p class='error'>Error sending message.</p>";
+      });
+    });
+  </script>
+</body>
+</html>
