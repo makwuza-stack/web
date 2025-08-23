@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GS GAKORO Home</title>
   <style>
-    /* Reset + Base */
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
@@ -15,7 +14,7 @@
     }
     a { text-decoration: none; color: inherit; }
 
-    /* Top Navbar */
+    /* Navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -26,165 +25,44 @@
       top: 0;
       z-index: 999;
     }
-    .navbar .logo {
-      color: #fff;
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    .navbar nav {
-      display: flex;
-      gap: 20px;
-    }
-    .navbar nav a {
-      color: #fff;
-      font-weight: 500;
-      padding: 6px 10px;
-      transition: border-bottom 0.2s;
-    }
-    .navbar nav a:hover,
-    .navbar nav a.active {
-      border-bottom: 3px solid #00aaff;
-    }
-    /* Mobile menu */
-    .menu-toggle {
-      display: none;
-      font-size: 26px;
-      color: #fff;
-      cursor: pointer;
-    }
+    .navbar .logo { color: #fff; font-size: 22px; font-weight: 700; }
+    .navbar nav { display: flex; gap: 20px; }
+    .navbar nav a { color: #fff; font-weight: 500; padding: 6px 10px; transition: border-bottom 0.2s; }
+    .navbar nav a:hover, .navbar nav a.active { border-bottom: 3px solid #00aaff; }
+    .menu-toggle { display: none; font-size: 26px; color: #fff; cursor: pointer; }
     @media(max-width:768px){
-      .navbar nav {
-        display: none;
-        flex-direction: column;
-        background: #001f3f;
-        position: absolute;
-        top: 60px;
-        right: 0;
-        width: 200px;
-      }
-      .navbar nav.active {
-        display: flex;
-      }
+      .navbar nav { display: none; flex-direction: column; background: #001f3f; position: absolute; top: 60px; right: 0; width: 200px; }
+      .navbar nav.active { display: flex; }
       .menu-toggle { display: block; }
     }
 
-    /* Header Section */
-    header {
-      text-align: center;
-      padding: 40px 20px;
-      background: linear-gradient(135deg, #001f3f, #004080, #0059b3);
-      color: white;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 42px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    header h3 {
-      margin-top: 10px;
-      font-size: 20px;
-      font-weight: 400;
-      animation: fadeInOut 6s infinite;
-    }
-    @keyframes fadeInOut {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { opacity: 0; }
-    }
+    /* Header */
+    header { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #001f3f, #004080, #0059b3); color: white; }
+    header h1 { margin: 0; font-size: 42px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
+    header h3 { margin-top: 10px; font-size: 20px; font-weight: 400; animation: fadeInOut 6s infinite; }
+    @keyframes fadeInOut { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
 
     /* Slideshow */
-    #slideshow {
-      position: relative;
-      height: 350px;
-      max-width: 1000px;
-      margin: 20px auto;
-      overflow: hidden;
-    }
-    #slideshow .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
-    #slideshow .slide.active {
-      opacity: 1;
-    }
-    #slideshow img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    /* Caption at bottom */
-    .caption {
-      position: absolute;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      padding: 8px 15px;
-      border-radius: 5px;
-      font-size: 16px;
-    }
+    #slideshow { position: relative; height: 350px; max-width: 1000px; margin: 20px auto; overflow: hidden; }
+    #slideshow .slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; }
+    #slideshow .slide.active { opacity: 1; }
+    #slideshow img { width: 100%; height: 100%; object-fit: cover; }
+    .caption { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; padding: 8px 15px; border-radius: 5px; font-size: 16px; }
 
     /* News Grid */
-    .news-section {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 25px;
-    }
-    .news-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
+    .news-section { max-width: 1100px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+    .news-card { background: #fff; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.3s; }
     .news-card:hover { transform: translateY(-5px); }
-    .news-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-    .news-card .content {
-      padding: 15px;
-    }
-    .news-card h2 {
-      margin: 0;
-      font-size: 20px;
-      color: #004080;
-    }
-    .news-card p {
-      font-size: 15px;
-      margin: 10px 0;
-    }
-    .read-more {
-      color: #0059b3;
-      font-weight: 600;
-      font-size: 14px;
-    }
+    .news-card img { width: 100%; height: 180px; object-fit: cover; }
+    .news-card .content { padding: 15px; }
+    .news-card h2 { margin: 0; font-size: 20px; color: #004080; }
+    .news-card p { font-size: 15px; margin: 10px 0; }
+    .read-more { color: #0059b3; font-weight: 600; font-size: 14px; }
+    .view-count { font-weight: bold; color: #004080; margin: 5px 0; }
 
     /* Footer */
-    footer {
-      background: #001f3f;
-      color: white;
-      text-align: center;
-      padding: 25px;
-      margin-top: 50px;
-    }
-    footer a {
-      color: #00aaff;
-      font-weight: 600;
-    }
+    footer { background: #001f3f; color: white; text-align: center; padding: 25px; margin-top: 50px; }
+    footer a { color: #00aaff; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -227,29 +105,32 @@
 
   <!-- News Section -->
   <section class="news-section">
-    <div class="news-card">
+    <div class="news-card" data-article="article1">
       <img src="hti.jpg" alt="Article 1">
       <div class="content">
         <h2>Gukundisha Abanyeshuri amasomo y’ingenzi</h2>
         <p>Abarezi berekanye ko gukundisha abanyeshuri amasomo y’ingenzi bifasha guteza imbere ireme ry’uburezi mu gihugu...</p>
+        <p class="view-count">👀 Loading...</p>
         <a href="article1.html" class="read-more">Read more →</a>
       </div>
     </div>
 
-    <div class="news-card">
+    <div class="news-card" data-article="article2">
       <img src="dos.jpg" alt="Article 2">
       <div class="content">
         <h2>Ikoranabuhanga mu burezi rya none</h2>
         <p>Ikoranabuhanga rikomeje guhindura uburyo bw’imyigishirize, rituma abanyeshuri babona amasomo ku buryo bworoshye kandi bufatika...</p>
+        <p class="view-count">👀 Loading...</p>
         <a href="article2.html" class="read-more">Read more →</a>
       </div>
     </div>
 
-    <div class="news-card">
+    <div class="news-card" data-article="article3">
       <img src="dod.jpg" alt="Article 3">
       <div class="content">
         <h2>Uburezi bwimakaza indangagaciro</h2>
         <p>Indangagaciro z’ubumuntu n’ubupfura ni ingenzi mu burezi, zifasha urubyiruko gukura neza, rufite icyerekezo kirambye...</p>
+        <p class="view-count">👀 Loading...</p>
         <a href="article3.html" class="read-more">Read more →</a>
       </div>
     </div>
@@ -264,6 +145,7 @@
     <div>&copy; 2025 DOD MAKUZA CELESTIN. All rights reserved.</div>
   </footer>
 
+  <!-- Scripts -->
   <script>
     // Toggle menu mobile
     document.querySelector(".menu-toggle").addEventListener("click", () => {
@@ -278,10 +160,29 @@
       slideIndex = (slideIndex + 1) % slides.length;
       slides[slideIndex].classList.add("active");
     }, 4000);
+
+    // Load views for all news cards and refresh every 10s
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbxPqqKmHSI1oiRb_6nLHFUdv5fHwDczjhJ7LR0PT3C2fOe85-Rhfik2zUPnQG8IyD3_jA/exec"; // <-- Replace with your Apps Script URL
+
+    async function loadCardViews() {
+      const cards = document.querySelectorAll('.news-card');
+
+      cards.forEach(async card => {
+        const articleName = card.getAttribute('data-article');
+        try {
+          const res = await fetch(`${webAppUrl}?article=${articleName}`);
+          const data = await res.json();
+          card.querySelector('.view-count').innerText = `👀 Views: ${data.views}`;
+        } catch (err) {
+          card.querySelector('.view-count').innerText = "👀 Views: Error";
+        }
+      });
+    }
+
+    // Initial load
+    loadCardViews();
+    // Auto-refresh every 10 seconds
+    setInterval(loadCardViews, 10000);
   </script>
 </body>
 </html>
-
-
-
-
