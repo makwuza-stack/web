@@ -116,7 +116,7 @@
         if (liveData.items && liveData.items.length > 0) {
           const liveVideoId = liveData.items[0].id.videoId;
           playerContainer.innerHTML = `
-            <iframe src="https://www.youtube.com/embed/${liveVideoId}?autoplay=1" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/${liveVideoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             <p class="status">🔴 Yay! We are live now – don’t miss out 🎉</p>
           `;
         } else {
@@ -127,7 +127,7 @@
           if (latestData.items && latestData.items.length > 0) {
             const latestVideoId = latestData.items[0].id.videoId;
             playerContainer.innerHTML = `
-              <iframe src="https://www.youtube.com/embed/${latestVideoId}" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/${latestVideoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <p class="status">✨ Latest fun video just for you! 📺</p>
             `;
           } else {
@@ -157,7 +157,7 @@
             // When clicked, update the main player iframe
             videoItem.onclick = () => {
               playerContainer.innerHTML = `
-                <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 <p class="status">🎉 You selected this awesome video! 🎥</p>
               `;
               window.scrollTo({ top: 0, behavior: 'smooth' });
