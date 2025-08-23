@@ -43,42 +43,59 @@
       color: #cc5500;
     }
 
+    /* Hamburger button */
     .menu-toggle {
       display: none;
       flex-direction: column;
       gap: 5px;
       cursor: pointer;
+      z-index: 1002;
     }
     .menu-toggle span {
       width: 25px;
       height: 3px;
       background: white;
       border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    /* Animate hamburger to X */
+    .menu-toggle.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
     }
 
+    /* Mobile nav */
     .mobile-nav {
-      position: absolute;
-      top: 60px;
-      left: 0;
-      width: 100%;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 75%;
+      height: 100%;
       background: #0a1a3f;
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.5s cubic-bezier(0.2, 1.2, 0.2, 1);
       display: flex;
       flex-direction: column;
+      padding-top: 80px;
+      transition: right 0.4s ease;
+      z-index: 1001;
     }
     .mobile-nav.open {
-      max-height: 400px;
+      right: 0;
     }
     .mobile-nav a {
-      color: white;
-      padding: 15px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ff9900;
+      padding: 15px 20px;
       text-decoration: none;
+      font-weight: bold;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     .mobile-nav a:hover {
       background-color: #cc5500;
+      color: white;
     }
 
     /* Hero card */
@@ -222,24 +239,29 @@
       <img src="logo.png" alt="Logo">
     </a>
 
+    <!-- Desktop Navigation -->
     <nav class="desktop-nav">
       <a href="index.html">Home</a>
-      <a href="Search.html">RIASEC Result</a>
-      <a href="login.html">BSSA</a>
-      <a href="admin.html">Admin Page</a>
+      <a href="test.html">Test</a>
+      <a href="Search.html">Result</a>
+      <a href="login.html">Teachers</a>
+      <a href="admin.html">Administration</a>
     </nav>
 
+    <!-- Hamburger -->
     <div class="menu-toggle" id="menu-toggle">
       <span></span>
       <span></span>
       <span></span>
     </div>
 
+    <!-- Mobile Navigation -->
     <nav class="mobile-nav" id="mobile-nav">
       <a href="index.html">Home</a>
-      <a href="Search.html">RIASEC Result</a>
-      <a href="#">News</a>
-      <a href="admin.html">Admin Page</a>
+      <a href="test.html">Test</a>
+      <a href="Search.html">Result</a>
+      <a href="login.html">Teachers</a>
+      <a href="admin.html">Administration</a>
     </nav>
   </header>
 
@@ -281,8 +303,8 @@
   </section>
 
   <footer>
-    <p>&copy; 2025 EduGuide. All rights reserved. | <a href="#">Privacy Policy</a></p>
-    <p>EduGuide Developed by DoD Makuza Celestin.</p>
+    <p>&copy; 2025 EduGuide. All rights reserved</a></p>
+    <p>EduGuide Developed by MCelestin.</p>
   </footer>
 
   <script>
@@ -291,11 +313,9 @@
 
     toggle.addEventListener('click', () => {
       mobileMenu.classList.toggle('open');
+      toggle.classList.toggle('open'); // animate hamburger
     });
   </script>
 
 </body>
 </html>
-
-
-
