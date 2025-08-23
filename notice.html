@@ -6,40 +6,65 @@
   <title>GS GAKORO | Notice Board</title>
   <style>
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Comic Sans MS', 'Segoe UI', Arial, sans-serif;
       margin: 0;
       padding: 0;
       background: #f8f9fc;
       color: #333;
     }
 
+    /* Frozen playful header */
     header {
-      background: #001f3f;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(90deg, #ff6f61, #ffcc00, #4caf50, #2196f3);
+      background-size: 300% 300%;
+      animation: rainbowShift 8s ease infinite;
       color: #fff;
       text-align: center;
-      padding: 25px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     header h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 26px;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
     }
 
+    @keyframes rainbowShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Sticky nav under header */
     nav {
+      position: sticky;
+      top: 70px; /* sticks right under header */
+      z-index: 999;
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       background: #004080;
     }
 
     nav a {
       color: white;
       text-decoration: none;
-      padding: 14px 20px;
+      padding: 14px 18px;
       font-weight: 600;
+      font-size: 16px;
+      transition: background 0.3s ease, transform 0.2s ease;
     }
 
     nav a:hover {
-      background: #0059b3;
+      background: #ffcc00;
+      color: #001f3f;
+      border-radius: 6px;
+      transform: scale(1.1);
     }
 
     main {
@@ -65,15 +90,15 @@
     .notice {
       background: #fff;
       border-left: 6px solid #004080;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .notice:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
     .notice h3 {
@@ -99,46 +124,53 @@
       color: white;
       padding: 15px;
       margin-top: 40px;
+      font-size: 14px;
+    }
+
+    /* Mobile friendly adjustments */
+    @media (max-width: 600px) {
+      header h1 { font-size: 20px; }
+      nav a { padding: 10px 12px; font-size: 14px; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>GS GAKORO Notice Board</h1>
+    <h1>🎉 GS GAKORO Notice Board 📢</h1>
   </header>
 
   <nav>
-    <a href="index.html">Home</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="videos.html">Media TV</a>
-    <a href="eduguide.html">EduGuide</a>
-    <a href="index.html">News</a>
-    <a href="notice.html">Notice Board</a>
+    <a href="index.html">🏠 Home</a>
+    <a href="gallery.html">🖼️ Gallery</a>
+    <a href="videos.html">📺 GM TV</a>
+    <a href="eduguide.html">📘 EduGuide</a>
+    <a href="index.html">📰 News</a>
+    <a href="notice.html">📢 Notice Board</a>
   </nav>
 
   <main>
-    <h2>Recent Announcements</h2>
+    <h2>✨ Recent Announcements ✨</h2>
     <div class="notice-board">
       <div class="notice">
-        <h3>Beginning of 2024-2025 Academic year</h3>
-        <p>The final Starting date for Term I has been released 8.9.2025. Students are advised to check their class schedules and get prepared accordingly.</p>
+        <h3>🎓 Beginning of 2024-2025 Academic Year</h3>
+        <p>The final starting date for Term I has been released: <b>8.9.2025</b>. Students are advised to check their class schedules and get prepared accordingly.</p>
         <p class="date">📅 Posted: August 20, 2025</p>
       </div>
 
       <div class="notice">
-        <h3>Parents Meeting</h3>
+        <h3>👨‍👩‍👧 Parents Meeting</h3>
         <p>Coming soon!</p>
         <p class="date">📅 Posted: August 18, 2025</p>
       </div>
 
       <div class="notice">
-        <h3>Sports Day</h3>
+        <h3>⚽ Sports Day</h3>
         <p>Coming soon!</p>
         <p class="date">📅 Posted: August 15, 2025</p>
       </div>
 
       <div class="notice">
-        <h3>Holiday Break</h3>
+        <h3>🏖️ Holiday Break</h3>
         <p>Coming soon!</p>
         <p class="date">📅 Posted: August 10, 2025</p>
       </div>
