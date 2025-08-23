@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gakoro Media TV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      background: #ff7900;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      z-index: 1000;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background: #003366;
+      padding: 10px;
+      position: sticky;
+      top: 60px;
+      z-index: 999;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .video-player {
+      width: 100%;
+      max-width: 900px;
+      margin: 20px auto;
+      aspect-ratio: 16/9;
+      background: black;
+    }
+    .video-player iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .status {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .video-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .video-item {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .video-item:hover {
+      transform: scale(1.05);
+    }
+    .video-item img {
+      width: 100%;
+      display: block;
+    }
+    .video-title {
+      padding: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    /* Mobile menu */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: #003366;
+    }
+    .mobile-nav a {
+      padding: 10px;
+      border-top: 1px solid #004080;
+      color: white;
+      text-decoration: none;
+    }
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .hamburger { display: block; padding: 10px; background: #003366; color: white; text-align: center; }
+      .mobile-nav { display: none; }
+      .mobile-nav.active { display: flex; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gakoro Media TV</h1>
+  </header>
+
+  <div class="hamburger" onclick="toggleMenu()">☰ Menu</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="test.html">Test</a>
+    <a href="Search.html">Result</a>
+    <a href="login.html">Teachers</a>
+    <a href="admin.html">Administration</a>
+  </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html">Home</a>
+    <a href="test.html">Test</a>
+    <a href="Search.html">Result</a>
+    <a href="login.html">Teachers</a>
+    <a href="admin.html">Administration</a>
+  </div>
+
+  <main>
+    <div id="player-container" class="video-player"></div>
+    <div id="video-list" class="video-list"></div>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobile-nav').classList.toggle('active');
+    }
+
+    const apiKey = "YOUR_YOUTUBE_API_KEY"; // replace with your API key
+    const channelId = "YOUR_CHANNEL_ID"; // replace with your channel ID
+    const playerContainer = document.getElementById('player-container');
+    const listContainer = document.getElementById('video-list');
+
+    async function loadVideos() {
+      try {
+        // Fetch videos
+        const listRes = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=10`);
+        const listData = await listRes.json();
+
+        if (listData.items && listData.items.length > 0) {
+          // Collect video IDs
+          const videoIds = listData.items.map(item => item.id.videoId).filter(Boolean);
+          const firstVideoId = videoIds[0];
+          const playlistIds = videoIds.slice(1).join(',');
+
+          // Main autoplay playlist
+          playerContainer.innerHTML = `
+            <iframe src="https://www.youtube.com/embed/${firstVideoId}?autoplay=1&mute=1&playlist=${playlistIds}&loop=0&rel=0" 
+              allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <p class="status">🎬 Playing all videos in sequence 🎉</p>
+          `;
+
+          // Video list
+          listContainer.innerHTML = '';
+          listData.items.forEach(item => {
+            const videoId = item.id.videoId;
+            const title = item.snippet.title;
+            const thumbnail = item.snippet.thumbnails.medium.url;
+
+            const videoItem = document.createElement('div');
+            videoItem.className = 'video-item';
+            videoItem.innerHTML = `
+              <img src="${thumbnail}" alt="${title}" />
+              <div class="video-title">🎬 ${title}</div>
+            `;
+
+            // Click = play from that video onwards
+            videoItem.onclick = () => {
+              const newPlaylist = videoIds.filter(id => id !== videoId).join(',');
+              playerContainer.innerHTML = `
+                <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playlist=${newPlaylist}&loop=0&rel=0" 
+                  allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <p class="status">🎥 Now playing this video + the rest in order</p>
+              `;
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            listContainer.appendChild(videoItem);
+          });
+        }
+      } catch (e) {
+        playerContainer.innerHTML = `<p class="status">⚠️ Error loading videos</p>`;
+        console.error(e);
+      }
+    }
+
+    loadVideos();
+  </script>
+</body>
+</html>
