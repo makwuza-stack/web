@@ -6,108 +6,159 @@
   <title>GS GAKORO | Staff & Teachers</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Comic Sans MS", "Segoe UI", Arial, sans-serif;
       margin: 0;
-      background: #f4f4f9;
+      background: #f0f9ff;
       color: #333;
       line-height: 1.6;
     }
+
+    /* Header */
     header {
-      background: #001f3f;
+      background: linear-gradient(90deg, #004080, #00aaff);
       color: white;
       padding: 20px;
       text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    header h1 { margin: 0; font-size: 28px; }
+    header h1 { margin: 0; font-size: 26px; }
+
+    /* Navigation */
     nav {
       display: flex;
       justify-content: center;
-      background: #004080;
+      background: #0077cc;
+      position: sticky;
+      top: 60px; /* sticks under header */
+      z-index: 999;
     }
     nav a {
       color: white;
       text-decoration: none;
-      padding: 15px 20px;
+      padding: 12px 16px;
       display: block;
-      font-weight: 600;
+      font-weight: bold;
+      transition: background 0.3s;
     }
-    nav a:hover { background: #0059b3; }
+    nav a:hover {
+      background: #00aaff;
+      border-radius: 6px;
+    }
+
+    /* Main */
     main {
       max-width: 1100px;
-      margin: 30px auto;
+      margin: 20px auto;
       background: white;
-      padding: 25px 30px;
+      padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    h2 { color: #001f3f; margin-bottom: 20px; }
+    h2 {
+      color: #004080;
+      margin: 20px 0;
+      font-size: 22px;
+      border-left: 6px solid #00aaff;
+      padding-left: 10px;
+    }
+
+    /* Grid of staff/teachers */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
       text-align: center;
     }
     .grid img {
-      width: 150px;
-      height: 200px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      margin-bottom: 8px;
+      width: 100%;
+      max-width: 130px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
-    .grid p { margin: 0; font-weight: bold; color: #004080; }
+    .grid img:hover {
+      transform: scale(1.1) rotate(-2deg);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+    .grid p {
+      margin: 6px 0 0;
+      font-weight: bold;
+      color: #0077cc;
+      font-size: 14px;
+    }
 
     /* Mailbox */
     .mailbox {
-      margin-top: 50px;
+      margin-top: 40px;
       padding: 20px;
-      background: #f9f9ff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
+      background: #e8f5ff;
+      border: 1px solid #99dfff;
+      border-radius: 12px;
     }
+    .mailbox h2 { color: #004080; }
     .mailbox input, .mailbox textarea {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid #bbb;
-      font-size: 14px;
-    }
-    .mailbox button {
-      background: #004080;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      cursor: pointer;
       font-size: 15px;
     }
-    .mailbox button:hover { background: #0059b3; }
+    .mailbox button {
+      background: #0077cc;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .mailbox button:hover {
+      background: #00aaff;
+      transform: scale(1.05);
+    }
     .success { color: green; margin-top: 10px; }
     .error { color: red; margin-top: 10px; }
+
+    /* Footer */
     footer {
-      background: #001f3f;
+      background: #004080;
       color: white;
       text-align: center;
       padding: 15px;
       margin-top: 30px;
+      font-size: 14px;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 600px) {
+      header h1 { font-size: 20px; }
+      nav a { padding: 10px; font-size: 14px; }
+      h2 { font-size: 18px; }
+      .grid img { max-width: 100px; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>GS GAKORO Staff & Teachers</h1>
+    <h1>🌟 GS GAKORO Staffers🌟</h1>
   </header>
 
   <nav>
-    <a href="index.html">Home</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="videos.html">Media TV</a>
-    <a href="eduguide.html">EduGuide</a>
-    <a href="news.html">News</a>
+    <a href="index.html">🏠 Home</a>
+    <a href="Gallery.html">📸 Gallery</a>
+    <a href="videos.html">📺 Media TV</a>
+    <a href="eduguide.html">📘 EduGuide</a>
+    <a href="index.html">📰 News</a>
   </nav>
 
   <main>
-    <h2>Staff Members</h2>
+    <h2>👨‍💼 Administration </h2>
     <div class="grid">
       <div><img src="p4.jpg" alt="HeadTeacher"><p>HeadTeacher</p></div>
       <div><img src="p3.jpg" alt="DoS"><p>DoS</p></div>
@@ -115,27 +166,27 @@
       <div><img src="p1.jpg" alt="Bursar"><p>Bursar</p></div>
     </div>
 
-    <h2 style="margin-top:40px;">Teachers</h2>
+    <h2>👩‍🏫 Teachers</h2>
     <div class="grid">
-      <div><img src="t.jpg"><p>Teacher 1</p></div>
-      <div><img src="s.jpg"><p>Teacher 2</p></div>
-      <div><img src="r.jpg"><p>Teacher 3</p></div>
-      <div><img src="u.jpg"><p>Teacher 4</p></div>
-      <div><img src="o.jpg"><p>Teacher 5</p></div>
-      <div><img src="n.jpg"><p>Teacher 6</p></div>
-      <div><img src="m.jpg"><p>Teacher 7</p></div>
-      <div><img src="l.jpg"><p>Teacher 8</p></div>
-      <div><img src="k.jpg"><p>Teacher 9</p></div>
-      <div><img src="j.jpg"><p>Teacher 10</p></div>
-      <div><img src="i.jpg"><p>Teacher 11</p></div>
-      <div><img src="h.jpg"><p>Teacher 12</p></div>
-      <div><img src="g.jpg"><p>Teacher 13</p></div>
-      <div><img src="f.jpg"><p>Teacher 14</p></div>
-      <div><img src="e.jpg"><p>Teacher 15</p></div>
-      <div><img src="d.jpg"><p>Teacher 16</p></div>
-      <div><img src="c.jpg"><p>Teacher 17</p></div>
-      <div><img src="b.jpg"><p>Teacher 18</p></div>
-      <div><img src="a.jpg"><p>Teacher 19</p></div>
+      <div><img src="t.jpg"><p>T.Patricia</p></div>
+      <div><img src="s.jpg"><p>T.Annonciata</p></div>
+      <div><img src="r.jpg"><p>T.Justine</p></div>
+      <div><img src="u.jpg"><p>T.Clarisse</p></div>
+      <div><img src="o.jpg"><p>T.Drocelle</p></div>
+      <div><img src="n.jpg"><p>T.Agathe</p></div>
+      <div><img src="m.jpg"><p>T.Felix</p></div>
+      <div><img src="l.jpg"><p>T.....</p></div>
+      <div><img src="k.jpg"><p>T......</p></div>
+      <div><img src="j.jpg"><p>T.Olive</p></div>
+      <div><img src="i.jpg"><p>T.Valens</p></div>
+      <div><img src="h.jpg"><p>T.Jacqueline</p></div>
+      <div><img src="g.jpg"><p>T.Angelique</p></div>
+      <div><img src="f.jpg"><p>T.François</p></div>
+      <div><img src="e.jpg"><p>T.Agnes</p></div>
+      <div><img src="d.jpg"><p>T.M.Josephine</p></div>
+      <div><img src="c.jpg"><p>T......</p></div>
+      <div><img src="b.jpg"><p>T.Gelardine</p></div>
+      <div><img src="a.jpg"><p>T.Jeanne</p></div>
     </div>
 
     <div class="mailbox">
@@ -144,14 +195,14 @@
         <input type="text" id="name" placeholder="Your Name" required>
         <input type="email" id="email" placeholder="Your Email" required>
         <textarea id="message" placeholder="Write your message here..." rows="5" required></textarea>
-        <button type="submit">Send</button>
+        <button type="submit">Send 💌</button>
       </form>
       <div id="response"></div>
     </div>
   </main>
 
   <footer>
-    &copy; 2025 GS GAKORO | Designed by DOD Makuza Celestin
+    &copy; 2025 GS GAKORO | Designed by MCelestin
   </footer>
 
   <script>
@@ -171,12 +222,12 @@
       .then(res => res.json())
       .then(response => {
         document.getElementById("response").innerHTML =
-          "<p class='success'>Thank you! We love it 💙</p>";
+          "<p class='success'>🎉 Thank you! We love your message 💙</p>";
         form.reset();
       })
       .catch(err => {
         document.getElementById("response").innerHTML =
-          "<p class='error'>Error sending message.</p>";
+          "<p class='error'>⚠️ Error sending message. Try again.</p>";
       });
     });
   </script>
