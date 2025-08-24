@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GS GAKORO Analytics</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; background: #121212; color: #fff; margin: 0; padding: 0; }
+  header { padding: 20px; text-align: center; background: linear-gradient(90deg,#ff6600,#ff9900);}
+  header h1 { margin: 0; font-size: 1.8em; }
+  .cards { display: flex; justify-content: center; gap: 20px; padding: 20px; }
+  .card { background: #1e1e1e; padding: 20px; border-radius: 12px; text-align: center; width: 200px; }
+  .card h2 { font-size: 2.5em; color:#ff9900; margin:0; }
+  canvas { background:#1e1e1e; border-radius:12px; padding:10px; max-width:100%; }
+  table { width: 100%; border-collapse: collapse; background:#1e1e1e; border-radius:12px; margin-top:20px; }
+  th, td { padding:10px; border-bottom:1px solid #333; text-align:left; }
+  th { background:#2a2a2a; color:#ff9900; }
+  tr:hover { background: rgba(255,153,0,0.1); }
+  #resetBtn { background:#ff3300; border:none; padding:12px 24px; border-radius:8px; color:white; cursor:pointer; font-size:1.1em; margin:20px auto; display:block; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📊 Site Analytics Dashboard</h1>
+</header>
+
+<div class="cards">
+  <div class="card">
+    <h2 id="totalVisits">—</h2>
+    <p>Total Visits</p>
+  </div>
+  <div class="card">
+    <h2 id="uniqueVisitors">—</h2>
+    <p>Unique Visitors</p>
+  </div>
+</div>
+
+<div style="padding: 0 20px;">
+  <canvas id="visitsChart" height="100"></canvas>
+</div>
+
+<div style="text-align:center;">
+  <button id="resetBtn">🔄 Reset Counts</button>
+</div>
+
+<div style="padding:20px;">
+  <h2 style="color:#ff9900;">Recent Visits</h2>
+  <table>
+    <thead>
+      <tr><th>Date & Time</th><th>Visitor ID</th></tr>
+    </thead>
+    <tbody id="recentVisits">
+      <tr><td colspan="2" style="text-align:center;">Loading...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxZC0oztMkcT892lMjbeUUyaROJwWJ9MNyiod4KBSlYypCZAdVupDL2vErcEWt_69d9/exec"; // Replace with your Apps Script URL
+
+const VISITOR_KEY = 'visitor_id';
+let visitorId = localStorage.getItem(VISITOR_KEY);
+if (!visitorId) {
+  visitorId = 'visitor-' + Math.random().toString(36).substr(2,9);
+  localStorage.setItem(VISITOR_KEY, visitorId);
+}
+
+async function fetchData() {
+  const res = await fetch(`${SCRIPT_URL}?visitor=${visitorId}`);
+  return res.json();
+}
+
+let chart;
+
+function updateDashboard(data){
+  document.getElementById('totalVisits').textContent = data.total;
+  document.getElementById('uniqueVisitors').textContent = data.unique;
+
+  // Recent table
+  const tbody = document.getElementById('recentVisits');
+  tbody.innerHTML = '';
+  data.recent.forEach(r=>{
+    const tr = document.createElement('tr');
+    const tdDate = document.createElement('td'); tdDate.textContent = new Date(r.time).toLocaleString();
+    const tdVisitor = document.createElement('td'); tdVisitor.textContent = r.visitor;
+    tr.appendChild(tdDate); tr.appendChild(tdVisitor);
+    tbody.appendChild(tr);
+  });
+  if(data.recent.length===0) tbody.innerHTML='<tr><td colspan="2" style="text-align:center;">No recent visits</td></tr>';
+
+  // Chart
+  const ctx = document.getElementById('visitsChart').getContext('2d');
+  const labels = data.daily.map(d=>d.date);
+  const counts = data.daily.map(d=>d.count);
+  if(chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type:'bar',
+    data:{ labels, datasets:[{label:'Daily Visits', data:counts, backgroundColor:'#ff9900', borderRadius:5 }] },
+    options:{
+      scales:{ x:{ ticks:{ color:'#fff' }, grid:{ color:'#333'}}, y:{ ticks:{ color:'#fff'}, grid:{ color:'#333'}, beginAtZero:true} },
+      plugins:{ legend:{ labels:{ color:'#fff'}} }
+    }
+  });
+}
+
+async function init(){
+  const data = await fetchData();
+  updateDashboard(data);
+}
+
+init();
+// Auto-refresh every 30s
+setInterval(init, 30000);
+
+// Reset Button
+document.getElementById('resetBtn').addEventListener('click', async () => {
+  const confirmed = confirm('Are you sure you want to reset all counts?');
+  if (!confirmed) return;
+
+  const password = prompt('Enter admin password:');
+  if (!password) return alert('Password is required.');
+
+  try {
+    const res = await fetch(`${SCRIPT_URL}?reset=true&password=${encodeURIComponent(password)}`, { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      alert('Counts reset successfully.');
+      updateDashboard(data);
+    } else {
+      alert('Incorrect password or error resetting.');
+    }
+  } catch (err) {
+    console.error('Reset error:', err);
+    alert('Error during reset.');
+  }
+});
+</script>
+
+</body>
+</html>
